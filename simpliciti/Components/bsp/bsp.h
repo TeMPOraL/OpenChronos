@@ -43,6 +43,8 @@
  *                                           Includes
  * ------------------------------------------------------------------------------------------------
  */
+#include <intrinsics.h>
+
 #include "bsp_board_defs.h"
 #include "bsp_macros.h"
 

@@ -47,6 +47,7 @@
  // pfs added
 #include "../../Applications/configuration/smpl_nwk_config.h"
 
+#include <stdint.h>
 #include "bsp.h"
 #include "mrfi_defs.h"
 

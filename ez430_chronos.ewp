@@ -17,15 +17,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>build\915MHz_-_Limited_IAR_Kickstart_(USA)\Exe</state>
+          <state>915MHz - Limited IAR Kickstart (USA)\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>build\915MHz_-_Limited_IAR_Kickstart_(USA)\Obj</state>
+          <state>915MHz - Limited IAR Kickstart (USA)\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>build\915MHz_-_Limited_IAR_Kickstart_(USA)\List</state>
+          <state>915MHz - Limited IAR Kickstart (USA)\List</state>
         </option>
         <option>
           <name>PosIndCode</name>
@@ -109,7 +109,7 @@
         </option>
         <option>
           <name>GStackSize2</name>
-          <state>256</state>
+          <state>100</state>
         </option>
         <option>
           <name>GHeapSize2</name>
@@ -155,12 +155,13 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>29</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
           <name>CCDefines</name>
           <state>ISM_US</state>
+          <state>__CC430F6137__</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -225,7 +226,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010</state>
+          <state>11111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -293,11 +294,12 @@
         </option>
         <option>
           <name>IExtraOptionsCheck</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IExtraOptions</name>
-          <state></state>
+          <state>-f"$PROJ_DIR$\simpliciti\Applications\configuration\End Device\smpl_config.dat"</state>
+          <state>-f"$PROJ_DIR$\simpliciti\Applications\configuration\smpl_nwk_config.dat"</state>
         </option>
         <option>
           <name>PreInclude</name>
@@ -353,16 +355,16 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CInput</name>
@@ -397,6 +399,10 @@
         <option>
           <name>IccRelaxedFpPrecision</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCPUTAG</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -906,15 +912,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>build\868MHz_-_Limited_IAR_Kickstart_(Europe)\Exe</state>
+          <state>868MHz - Limited IAR Kickstart (Europe)\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>build\868MHz_-_Limited_IAR_Kickstart_(Europe)\Obj</state>
+          <state>868MHz - Limited IAR Kickstart (Europe)\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>build\868MHz_-_Limited_IAR_Kickstart_(Europe)\List</state>
+          <state>868MHz - Limited IAR Kickstart (Europe)\List</state>
         </option>
         <option>
           <name>PosIndCode</name>
@@ -994,11 +1000,11 @@
         </option>
         <option>
           <name>GStackHeapOverride</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>GStackSize2</name>
-          <state>256</state>
+          <state>80</state>
         </option>
         <option>
           <name>GHeapSize2</name>
@@ -1044,7 +1050,7 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>29</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1115,7 +1121,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010</state>
+          <state>11111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1183,11 +1189,12 @@
         </option>
         <option>
           <name>IExtraOptionsCheck</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IExtraOptions</name>
-          <state></state>
+          <state>-f"$PROJ_DIR$\simpliciti\Applications\configuration\End Device\smpl_config.dat"</state>
+          <state>-f"$PROJ_DIR$\simpliciti\Applications\configuration\smpl_nwk_config.dat"</state>
         </option>
         <option>
           <name>PreInclude</name>
@@ -1243,16 +1250,16 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CInput</name>
@@ -1287,6 +1294,10 @@
         <option>
           <name>IccRelaxedFpPrecision</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCPUTAG</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1400,7 +1411,7 @@
         </option>
         <option>
           <name>ADebug</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>ADebugType</name>
@@ -1796,15 +1807,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>build\433MHz_-_Limited_IAR_Kickstart_(Other_regions)\Exe</state>
+          <state>433MHz - Limited IAR Kickstart (Other regions)\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>build\433MHz_-_Limited_IAR_Kickstart_(Other_regions)\Obj</state>
+          <state>433MHz - Limited IAR Kickstart (Other regions)\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>build\433MHz_-_Limited_IAR_Kickstart_(Other_regions)\List</state>
+          <state>433MHz - Limited IAR Kickstart (Other regions)\List</state>
         </option>
         <option>
           <name>PosIndCode</name>
@@ -1888,7 +1899,7 @@
         </option>
         <option>
           <name>GStackSize2</name>
-          <state>256</state>
+          <state>80</state>
         </option>
         <option>
           <name>GHeapSize2</name>
@@ -1934,12 +1945,13 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>29</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
           <name>CCDefines</name>
           <state>ISM_LF</state>
+          <state>__CC430F6137__</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2004,7 +2016,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010</state>
+          <state>11111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -2072,11 +2084,12 @@
         </option>
         <option>
           <name>IExtraOptionsCheck</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IExtraOptions</name>
-          <state></state>
+          <state>-f"$PROJ_DIR$\simpliciti\Applications\configuration\End Device\smpl_config.dat"</state>
+          <state>-f"$PROJ_DIR$\simpliciti\Applications\configuration\smpl_nwk_config.dat"</state>
         </option>
         <option>
           <name>PreInclude</name>
@@ -2132,16 +2145,16 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CInput</name>
@@ -2176,6 +2189,10 @@
         <option>
           <name>IccRelaxedFpPrecision</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCPUTAG</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -2685,15 +2702,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>build\915MHz_-_Unrestricted_IAR_Workbench_(USA)\Exe</state>
+          <state>915MHz - Unrestricted IAR Workbench (USA)\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>build\915MHz_-_Unrestricted_IAR_Workbench_(USA)\Obj</state>
+          <state>915MHz - Unrestricted IAR Workbench (USA)\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>build\915MHz_-_Unrestricted_IAR_Workbench_(USA)\List</state>
+          <state>915MHz - Unrestricted IAR Workbench (USA)\List</state>
         </option>
         <option>
           <name>PosIndCode</name>
@@ -2777,7 +2794,7 @@
         </option>
         <option>
           <name>GStackSize2</name>
-          <state>256</state>
+          <state>80</state>
         </option>
         <option>
           <name>GHeapSize2</name>
@@ -2823,7 +2840,7 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>29</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2895,7 +2912,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010</state>
+          <state>11111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -3030,7 +3047,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -3039,7 +3056,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CInput</name>
@@ -3074,6 +3091,10 @@
         <option>
           <name>IccRelaxedFpPrecision</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCPUTAG</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -3273,7 +3294,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>ez430_chronos_915MHz.txt</state>
+          <state>ez430_chronos_915MHz.d43</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3398,7 +3419,7 @@
         <option>
           <name>ModuleLocalSym</name>
           <version>0</version>
-          <state>2</state>
+          <state>0</state>
         </option>
         <option>
           <name>CrcBitOrder</name>
@@ -3455,11 +3476,11 @@
         </option>
         <option>
           <name>AllowExtraOutput</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>GenerateExtraOutput</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>XExtraOutOverride</name>
@@ -3467,12 +3488,12 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>ez430_chronos.txt</state>
+          <state>ez430_chronos.a43</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
           <version>11</version>
-          <state>33</state>
+          <state>23</state>
         </option>
         <option>
           <name>ExtraFormatVariant</name>
@@ -3493,7 +3514,7 @@
         </option>
         <option>
           <name>BufferedTermOutput</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>XExtraOptionsCheck</name>
@@ -3583,15 +3604,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>build\868MHz_-_Unrestricted_IAR_Workbench_(Europe)\Exe</state>
+          <state>868MHz - Unrestricted IAR Workbench (Europe)\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>build\868MHz_-_Unrestricted_IAR_Workbench_(Europe)\Obj</state>
+          <state>868MHz - Unrestricted IAR Workbench (Europe)\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>build\868MHz_-_Unrestricted_IAR_Workbench_(Europe)\List</state>
+          <state>868MHz - Unrestricted IAR Workbench (Europe)\List</state>
         </option>
         <option>
           <name>PosIndCode</name>
@@ -3616,42 +3637,42 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>1</state>
+          <state>2</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Use the normal configuration of the C/EC++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
+          <state>Use the full configuration of the C/EC++ runtime library. Full locale interface, C locale, file descriptor support, multibytes in printf and scanf, and hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state>$TOOLKIT_DIR$\LIB\DLIB\dl430xsfn.h</state>
+          <state>$TOOLKIT_DIR$\LIB\DLIB\dl430xsff.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state>$TOOLKIT_DIR$\LIB\DLIB\dl430xsfn.r43</state>
+          <state>$TOOLKIT_DIR$\LIB\DLIB\dl430xsff.r43</state>
         </option>
         <option>
           <name>Input variant</name>
           <version>0</version>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>Input description</name>
-          <state>No specifier n, no float or long long.</state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>Output variant</name>
           <version>0</version>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>Output description</name>
-          <state>No specifier a or A.</state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>1</state>
+          <state>2</state>
         </option>
         <option>
           <name>OGCore</name>
@@ -3675,11 +3696,11 @@
         </option>
         <option>
           <name>GStackSize2</name>
-          <state>256</state>
+          <state>120</state>
         </option>
         <option>
           <name>GHeapSize2</name>
-          <state>80</state>
+          <state>120</state>
         </option>
         <option>
           <name>RadioDataModelType</name>
@@ -3721,7 +3742,7 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>29</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -3793,7 +3814,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010</state>
+          <state>11111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -3928,7 +3949,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -3937,7 +3958,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CInput</name>
@@ -3972,6 +3993,10 @@
         <option>
           <name>IccRelaxedFpPrecision</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCPUTAG</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -4448,7 +4473,7 @@
         <debug>1</debug>
         <option>
           <name>XAROutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>XARInputs</name>
@@ -4456,7 +4481,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>ez430_chronos.r43</state>
         </option>
       </data>
     </settings>
@@ -4481,15 +4506,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>build\433MHz_-_Unrestricted_IAR_Workbench_(Other_regions)\Exe</state>
+          <state>433MHz - Unrestricted IAR Workbench (Other regions)\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>build\433MHz_-_Unrestricted_IAR_Workbench_(Other_regions)\Obj</state>
+          <state>433MHz - Unrestricted IAR Workbench (Other regions)\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>build\433MHz_-_Unrestricted_IAR_Workbench_(Other_regions)\List</state>
+          <state>433MHz - Unrestricted IAR Workbench (Other regions)\List</state>
         </option>
         <option>
           <name>PosIndCode</name>
@@ -4573,7 +4598,7 @@
         </option>
         <option>
           <name>GStackSize2</name>
-          <state>256</state>
+          <state>80</state>
         </option>
         <option>
           <name>GHeapSize2</name>
@@ -4619,7 +4644,7 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>29</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4691,7 +4716,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>10010</state>
+          <state>11111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -4826,7 +4851,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -4835,7 +4860,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>2</state>
+          <state>3</state>
         </option>
         <option>
           <name>CInput</name>
@@ -4870,6 +4895,10 @@
         <option>
           <name>IccRelaxedFpPrecision</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCPUTAG</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -5436,15 +5465,7 @@
       <name>$PROJ_DIR$\driver\display.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\driver\display1.c</name>
-      <excluded>
-        <configuration>915MHz - Limited IAR Kickstart (USA)</configuration>
-        <configuration>868MHz - Limited IAR Kickstart (Europe)</configuration>
-        <configuration>433MHz - Limited IAR Kickstart (Other regions)</configuration>
-      </excluded>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\driver\ez430_chronos_codesize_limited_drivers.r43</name>
+      <name>$PROJ_DIR$\driver\ez430_chronos_drivers.r43</name>
       <excluded>
         <configuration>915MHz - Unrestricted IAR Workbench (USA)</configuration>
         <configuration>868MHz - Unrestricted IAR Workbench (Europe)</configuration>
@@ -5464,11 +5485,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\driver\ports.c</name>
-      <excluded>
-        <configuration>915MHz - Limited IAR Kickstart (USA)</configuration>
-        <configuration>868MHz - Limited IAR Kickstart (Europe)</configuration>
-        <configuration>433MHz - Limited IAR Kickstart (Other regions)</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\driver\ports.h</name>
@@ -5497,11 +5513,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\driver\timer.c</name>
-      <excluded>
-        <configuration>915MHz - Limited IAR Kickstart (USA)</configuration>
-        <configuration>868MHz - Limited IAR Kickstart (Europe)</configuration>
-        <configuration>433MHz - Limited IAR Kickstart (Other regions)</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\driver\timer.h</name>
@@ -5586,12 +5597,6 @@
       <name>$PROJ_DIR$\logic\menu.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\logic\phase_clock.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\logic\phase_clock.h</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\logic\rfbsl.c</name>
     </file>
     <file>
@@ -5635,9 +5640,14 @@
       <group>
         <name>application</name>
         <group>
-          <name>End_Device</name>
+          <name>End Device</name>
           <file>
-            <name>$PROJ_DIR$\simpliciti\Applications\application\End_Device\main_ED_BM.c</name>
+            <name>$PROJ_DIR$\simpliciti\Applications\application\End Device\main_ED_BM.c</name>
+            <excluded>
+              <configuration>915MHz - Limited IAR Kickstart (USA)</configuration>
+              <configuration>868MHz - Limited IAR Kickstart (Europe)</configuration>
+              <configuration>433MHz - Limited IAR Kickstart (Other regions)</configuration>
+            </excluded>
           </file>
         </group>
       </group>
@@ -6011,10 +6021,7 @@
     <name>$PROJ_DIR$\change_record.txt</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\config.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\ezchronos.c</name>
+    <name>$PROJ_DIR$\main.c</name>
   </file>
 </project>
 

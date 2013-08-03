@@ -106,7 +106,6 @@ extern unsigned char simpliciti_flag;
 #define SIMPLICITI_TRIGGER_SEND_DATA 	        (BIT3)
 #define SIMPLICITI_TRIGGER_RECEIVED_DATA 	    (BIT4)
 #define SIMPLICITI_TRIGGER_STOP		            (BIT5)
-#define SIMPLICITI_TRIGGER_RECEIVE_DATA 	    (BIT6)
 
 // Radio frequency offset read from calibration memory
 // Compensates crystal deviation from 26MHz nominal value
@@ -121,10 +120,10 @@ extern unsigned char rf_frequoffset;
 
 // ---------------------------------------------------------------
 // SimpliciTI RX only
-#ifdef SIMPLICITI_TX_ONLY_REQ
+
 // Entry point into SimpliciTI library
 extern void simpliciti_main_tx_only(void);
-#endif
+
 // Callback function to read data from acceleration sensor or buttons and trigger sending 
 extern void simpliciti_get_ed_data_callback(void);
 

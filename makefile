@@ -21,12 +21,11 @@ CC_INCLUDE = -I$(PROJ_DIR)/ -I$(PROJ_DIR)/include/ -I$(PROJ_DIR)/gcc/ -I$(PROJ_D
 
 CC_COPT		=  $(CC_CMACH) $(CC_DMACH) $(CC_DOPT)  $(CC_INCLUDE) 
 
-LOGIC_SOURCE = logic/acceleration.c logic/alarm.c logic/altitude.c logic/battery.c  logic/clock.c logic/date.c logic/menu.c logic/rfbsl.c logic/rfsimpliciti.c logic/stopwatch.c logic/temperature.c logic/test.c logic/user.c logic/phase_clock.c logic/eggtimer.c logic/prout.c logic/vario.c logic/sidereal.c logic/strength.c \
-				logic/sequence.c logic/gps.c logic/dst.c
+LOGIC_SOURCE = logic/acceleration.c logic/alarm.c logic/altitude.c logic/battery.c  logic/clock.c logic/date.c logic/menu.c logic/rfbsl.c logic/rfsimpliciti.c logic/stopwatch.c logic/temperature.c logic/test.c logic/user.c logic/bluerobin.c 
 
 LOGIC_O = $(addsuffix .o,$(basename $(LOGIC_SOURCE)))
 
-DRIVER_SOURCE =  driver/adc12.c driver/buzzer.c driver/display.c driver/display1.c driver/pmm.c driver/ports.c driver/radio.c driver/rf1a.c   driver/timer.c  driver/vti_as.c driver/vti_ps.c driver/dsp.c driver/infomem.c
+DRIVER_SOURCE =  driver/adc12.c driver/buzzer.c driver/display.c driver/pmm.c driver/ports.c driver/radio.c driver/rf1a.c   driver/timer.c  driver/vti_as.c driver/vti_ps.c 
 
 DRIVER_O = $(addsuffix .o,$(basename $(DRIVER_SOURCE)))
 
@@ -36,11 +35,16 @@ SIMPLICICTI_SOURCE = $(SIMPLICICTI_SOURCE_ODD) simpliciti/Components/bsp/bsp.c s
 
 SIMPLICICTI_O = $(addsuffix .o,$(basename $(SIMPLICICTI_SOURCE)))
 
-MAIN_SOURCE = ezchronos.c  gcc/intrinsics.c 
+SIMU_SOURCE = bluerobin/BlueRobin_RX_simu.c 
 
-MAIN_O = ezchronos.o gcc/intrinsics.o 
+SIMU_O = $(addsuffix .o,$(basename $(SIMU_SOURCE)))
 
-ALL_O = $(LOGIC_O) $(DRIVER_O) $(SIMPLICICTI_O) $(MAIN_O)
+
+MAIN_SOURCE = main.c  gcc/intrinsics.c 
+
+MAIN_O = main.o gcc/intrinsics.o 
+
+ALL_O = $(LOGIC_O) $(DRIVER_O) $(SIMPLICICTI_O) $(SIMU_O) $(MAIN_O)
 
 ALL_S = $(addsuffix .s,$(basename $(LOGIC_SOURCE))) $(addsuffix .s,$(basename $(DRIVER_SOURCE))) $(addsuffix .s,$(basename $(SIMPLICICTI_SOURCE)))  \
         $(addsuffix .s,$(basename $(MAIN_SOURCE)))  
@@ -60,7 +64,7 @@ endif
 main: build config.h even_in_range $(ALL_O) $(EXTRA_O) build
 	@echo $(findstring debug,$(MAKEFLAGS))
 	@echo "Compiling $@ for $(CPU)..."
-	$(CC) $(CC_CMACH) $(CFLAGS_PRODUCTION) -o $(BUILD_DIR)/eZChronos.elf $(ALL_O) $(EXTRA_O)
+	$(CC) $(CC_CMACH) $(CFLAGS_PRODUCTION) -o $(BUILD_DIR)/eZChronos.elf $(ALL_O) $(EXTRA_O) 
 	@echo "Convert to TI Hex file"
 	$(PYTHON) tools/memory.py -i build/eZChronos.elf -o build/eZChronos.txt
 

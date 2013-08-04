@@ -110,147 +110,155 @@ DATA["TEXT_MODULES"] = {
 }
 
 #### MODULES ####
-
-DATA["CONFIG_EGGTIMER"] = {
-        "name": "Eggtimer (1480 bytes)",
+DATA["CONFIG_BLUEROBIN"] = {
+	"name": "Bluerobin stack with features: bloodrate speedometer",
         "depends": [],
         "default": False,
+	"isLinked" : True,
+	"filenames" : "logic/bluerobin.c bluerobin/BlueRobin_RX_simu.c",
         "help": "Countdown timer for intervals from seconds up to 20+ hours.",
 }
 
-DATA["CONFIG_PHASE_CLOCK"] = {
-        "name": "Phase Clock (918 bytes)",
-        "depends": [],
-        "default": False,
-        "help": "Measures sleep phase by recording body movement and sending the data to the accesspoint.\n"
-                "Designed to be used with uberclock",
-}
+#DATA["CONFIG_EGGTIMER"] = {
+#        "name": "Eggtimer (1480 bytes)",
+#        "depends": [],
+#        "default": False,
+#        "help": "Countdown timer for intervals from seconds up to 20+ hours.",
+#}
 
-DATA["CONFIG_ALTITUDE"] = {
-        "name": "Altitude (1202 bytes)",
-        "depends": [],
-        "default": True,
-        "help": "Messures altitude"
-        }
+#DATA["CONFIG_PHASE_CLOCK"] = {
+#        "name": "Phase Clock (918 bytes)",
+#        "depends": [],
+#        "default": False,
+#        "help": "Measures sleep phase by recording body movement and sending the data to the accesspoint.\n"
+#                "Designed to be used with uberclock",
+#}
 
-
-DATA["CONFIG_VARIO"] = {
-        "name": "Combined with alti, gives vertical speed (478 bytes)",
-        "depends": [],
-        "default": False}
-
-DATA["CONFIG_ALTI_ACCUMULATOR"] = {
-	"name": "Altitude accumulator (1068 bytes)",
-	"depends": [],
-	"default": False,
-	"help": "If active take altitude measurement once per minute and accumulate all ascending vertical meters."
-	}
-
-DATA["CONFIG_PROUT"] = {
-        "name": "Simple example that displays a text (238 bytes)",
-        "depends": [],
-        "default": False}
+#DATA["CONFIG_ALTITUDE"] = {
+#        "name": "Altitude (1202 bytes)",
+#        "depends": [],
+#        "default": True,
+#        "help": "Messures altitude"
+#        }
 
 
-DATA["CONFIG_SIDEREAL"] = {
-        "name": "Sidereal Time Clock (3418 bytes)",
-        "depends": [],
-        "default": False,
-        "help": "Calculate and show local sidereal time (accurate to ~5s).\n"
-                "To work properly, the current time zone (that is set on the normal clock) and longitude have to be set on the watch. The clock does real sidereal second clock ticks. When desired the sidereal time can also be set manually.\n"
-                "This does NOT replace the normal clock which is still available and working."
-        }
+#DATA["CONFIG_VARIO"] = {
+#        "name": "Combined with alti, gives vertical speed (478 bytes)",
+#        "depends": [],
+#        "default": False}
 
-DATA["CONFIG_DST"] = {
-        "name": "Daylight Saving Time",
-        "depends": [],
-        "default": 0,
-        "type": "choices",
-        "values": [(0, "No DST"), (1, "US/Canada"), (2, "Mexico"), (3, "Brazil"), (4, "EU/UK/Eastern Europe"), (5, "Australia"), (6, "New Zealand")],
-        "help": "Automatically adjust Clock for Daylight Saving Time"
-        }
+#DATA["CONFIG_ALTI_ACCUMULATOR"] = {
+#	"name": "Altitude accumulator (1068 bytes)",
+#	"depends": [],
+#	"default": False,
+#	"help": "If active take altitude measurement once per minute and accumulate all ascending vertical meters."
+#	}
 
-
-DATA["CONFIG_INFOMEM"] = {
-        "name": "Information Memory Driver (2934 bytes, requires sidereal clock)",
-        "depends": [],
-        "default": False,
-        "help": "Build driver for usage of the Information Memory.\n"
-                "COMPILATION WILL LIKELY FAIL WITH mspgcc4 <20100829 !"
-        }
+#DATA["CONFIG_PROUT"] = {
+#        "name": "Simple example that displays a text (238 bytes)",
+#        "depends": [],
+#        "default": False}
 
 
-DATA["CONFIG_ACCEL"] = {
-        "name": "Acceleration (1232 bytes)",
-        "depends": [],
-        "default": True,
-        "help": "Acceleration applications (display and transmission). When no other application uses the acceleration sensor, it is disabled completely"
-        }
+#DATA["CONFIG_SIDEREAL"] = {
+#        "name": "Sidereal Time Clock (3418 bytes)",
+#        "depends": [],
+#        "default": False,
+#        "help": "Calculate and show local sidereal time (accurate to ~5s).\n"
+#                "To work properly, the current time zone (that is set on the normal clock) and longitude have to be set on the watch. The clock does real sidereal second clock ticks. When desired the sidereal time can also be set manually.\n"
+#               "This does NOT replace the normal clock which is still available and working."
+#        }
 
-DATA["CONFIG_STRENGTH"] = {
-    "name": "Strength training timer (380 bytes)",
-    "depends": [],
-    "default": False,
-    "help": "Timer for strength training studios which have you perform repetitions for 90 seconds, e.g. Kieser Training"
-}
+#DATA["CONFIG_DST"] = {
+#        "name": "Daylight Saving Time",
+#        "depends": [],
+#        "default": 0,
+#        "type": "choices",
+#        "values": [(0, "No DST"), (1, "US/Canada"), (2, "Mexico"), (3, "Brazil"), (4, "EU/UK/Eastern Europe"), (5, "Australia"), (6, "New Zealand")],
+#        "help": "Automatically adjust Clock for Daylight Saving Time"
+#        }
+
+
+#DATA["CONFIG_INFOMEM"] = {
+#        "name": "Information Memory Driver (2934 bytes, requires sidereal clock)",
+#        "depends": [],
+#        "default": False,
+#        "help": "Build driver for usage of the Information Memory.\n"
+#                "COMPILATION WILL LIKELY FAIL WITH mspgcc4 <20100829 !"
+#        }
+
+
+#DATA["CONFIG_ACCEL"] = {
+#        "name": "Acceleration (1232 bytes)",
+#        "depends": [],
+#        "default": True,
+#        "help": "Acceleration applications (display and transmission). When no other application uses the acceleration sensor, it is disabled completely"
+#        }
+
+#DATA["CONFIG_STRENGTH"] = {
+#    "name": "Strength training timer (380 bytes)",
+#    "depends": [],
+#    "default": False,
+#    "help": "Timer for strength training studios which have you perform repetitions for 90 seconds, e.g. Kieser Training"
+#}
 
 # not yet working
-DATA["CONFIG_ALARM"] = {
-        "name": "Alarm (608 bytes)",
-        "depends": [],
-        "default": True}
-DATA["CONFIG_BATTERY"] = {
-        "name": "Battery (360 bytes)",
-        "depends": [],
-        "default": True}
-DATA["CONFIG_CLOCK"] = {
-        "name": "Clock",
-        "depends": [],
-        "default": True}
-DATA["CONFIG_DATE"] = {
-        "name": "Date",
-        "depends": [],
-        "default": True}
-DATA["CONFIG_RFBSL"] = {
-        "name": "Wireless Update",
-        "depends": [],
-        "default": True}
-DATA["CONFIG_STOP_WATCH"] = {
-        "name": "Stop Watch (1202 bytes)",
-        "depends": [],
-        "default": True}
-DATA["CONFIG_TEMP"] = {
-        "name": "Temperature",
-        "depends": [],
-        "default": True}
-
+#DATA["CONFIG_ALARM"] = {
+#        "name": "Alarm (608 bytes)",
+#        "depends": [],
+#        "default": True}
+#DATA["CONFIG_BATTERY"] = {
+#        "name": "Battery (360 bytes)",
+#        "depends": [],
+#        "default": True}
+#DATA["CONFIG_CLOCK"] = {
+#        "name": "Clock",
+#        "depends": [],
+#        "default": True}
+#DATA["CONFIG_DATE"] = {
+#        "name": "Date",
+#        "depends": [],
+#        "default": True}
+#DATA["CONFIG_RFBSL"] = {
+#        "name": "Wireless Update",
+#        "depends": [],
+#        "default": True}
+#DATA["CONFIG_STOP_WATCH"] = {
+#        "name": "Stop Watch (1202 bytes)",
+#        "depends": [],
+#        "default": True}
+#DATA["CONFIG_TEMP"] = {
+#        "name": "Temperature",
+#        "depends": [],
+#        "default": True}
+#
 
 ###IMPLEMENTED BY LeanChronos. gventosa 09.10.2010
-DATA["CONFIG_USEPPT"] = {
-        "name": "Use PPT",
-        "depends": [],
-        "default": True}
+#DATA["CONFIG_USEPPT"] = {
+#        "name": "Use PPT",
+#        "depends": [],
+#        "default": True}
 
-DATA["CONFIG_USE_SYNC_TOSET_TIME"] = {
-	"name": "Sync is the only way to set clocks data/time",
-	"depends": [],
-	"default": False}
+#DATA["CONFIG_USE_SYNC_TOSET_TIME"] = {
+#	"name": "Sync is the only way to set clocks data/time",
+#	"depends": [],
+#	"default": False}
 
-DATA["CONFIG_USE_DISCRET_RFBSL"] = {
-	"name": "RFBSL is hidden behind battery",
-	"depends": [],
-	"default": False}
+#DATA["CONFIG_USE_DISCRET_RFBSL"] = {
+#	"name": "RFBSL is hidden behind battery",
+#	"depends": [],
+#	"default": False}
 
-DATA["CONFIG_USE_GPS"] = {
-	"name": "GPS Functions enabled (doorlock)",
-	"depends": [],
-	"default": False}
+#DATA["CONFIG_USE_GPS"] = {
+#	"name": "GPS Functions enabled (doorlock)",
+#	"depends": [],
+#	"default": False}
 
-DATA["CONFIG_CW_TIME"] = {
-        "name": "CW Time",
-        "depends": [],
-        "default": False,
-	"help": "Send time in morse code"}
+#DATA["CONFIG_CW_TIME"] = {
+#        "name": "CW Time",
+#        "depends": [],
+#        "default": False,
+#	"help": "Send time in morse code"}
 
 HEADER = """
 #ifndef _CONFIG_H_
@@ -419,6 +427,7 @@ class OpenChronosApp(object):
                 raise ValueError, "Unhandled type"
 
         fp = open("config.h", "w")
+        fpmk = open("config.mk", "w")
         fp.write("// !!!! DO NOT EDIT !!!, use: make config\n")
         fp.write(HEADER)
         for key,dat in DATA.iteritems():
@@ -433,12 +442,20 @@ class OpenChronosApp(object):
                     fp.write("#define %s\n" %key)
                 else:
                     fp.write("// %s is not set\n" %key)
+		if DATA[key].get("isLinked", False):
+                    filename = DATA[key].get("filenames")
+		    if dat["value"]:
+		        fpmk.write("%s_FN = %s\n" %(key, filename))
+		    else:
+			fpmk.write("%s_FN = \n" %key)
             else:
                 fp.write("#define %s %s\n" %(key, dat["value"]))
             if DATA[key].get("ifndef", False):
                 fp.write("#endif // %s\n" %key)
-        fp.write(FOOTER)
 
+        fp.write(FOOTER)
+	fp.close()
+	fpmk.close()
 
     def load_config(self):
         def set_default():

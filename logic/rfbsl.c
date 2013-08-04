@@ -67,10 +67,11 @@ void sx_rfbsl(u8 line)
     if (sys.flag.low_battery)
         return;
 
+#ifdef CONFIG_BLUEROBIN  
     // Exit if BlueRobin stack is active
     if (is_bluerobin())
         return;
-
+#endif
     // Exit if SimpliciTI stack is active
     if (is_rf())
         return;

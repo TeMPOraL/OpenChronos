@@ -136,10 +136,11 @@ void sx_rf(u8 line)
     if (sys.flag.low_battery)
         return;
 
+#ifdef CONFIG_BLUEROBIN  
     // Exit if BlueRobin stack is active
     if (is_bluerobin())
         return;
-
+#endif
     // Turn off the backlight
     P2OUT &= ~BUTTON_BACKLIGHT_PIN;
     P2DIR &= ~BUTTON_BACKLIGHT_PIN;
@@ -165,10 +166,11 @@ void sx_ppt(u8 line)
     if (sys.flag.low_battery)
         return;
 
+#ifdef CONFIG_BLUEROBIN  
     // Exit if BlueRobin stack is active
     if (is_bluerobin())
         return;
-
+#endif
     // Turn off the backlight
     P2OUT &= ~BUTTON_BACKLIGHT_PIN;
     P2DIR &= ~BUTTON_BACKLIGHT_PIN;
@@ -193,10 +195,11 @@ void sx_sync(u8 line)
     if (sys.flag.low_battery)
         return;
 
+#ifdef CONFIG_BLUEROBIN  
     // Exit if BlueRobin stack is active
     if (is_bluerobin())
         return;
-
+#endif
     // Turn off the backlight
     P2OUT &= ~BUTTON_BACKLIGHT_PIN;
     P2DIR &= ~BUTTON_BACKLIGHT_PIN;

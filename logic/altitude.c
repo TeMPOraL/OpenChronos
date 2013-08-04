@@ -221,14 +221,21 @@ void do_altitude_measurement(u8 filter)
     else
     {
         // Filter current pressure
+#ifdef FIXEDPOINT
+        pressure = (u32)(((pressure * 2) + (sAlt.pressure * 8))/10);
+#else
         pressure = (u32) ((pressure * 0.2) + (sAlt.pressure * 0.8));
-
+#endif
         // Store average pressure
         sAlt.pressure = pressure;
     }
 
     // Convert pressure (Pa) and temperature (K) to altitude (m)
+#ifdef FIXEDPOINT
+	sAlt.altitude = conv_pa_to_altitude(sAlt.pressure, sAlt.temperature);
+#else
     sAlt.altitude = conv_pa_to_meter(sAlt.pressure, sAlt.temperature);
+#endif
 }
 
 // *************************************************************************************************
@@ -256,10 +263,11 @@ void mx_altitude(u8 line)
 
     // Clear display
     clear_display_all();
-
+#ifndef CONFIG_METRIC_ONLY
     // Set lower and upper limits for offset correction
     if (sys.flag.use_metric_units)
     {
+#endif
         // Display "m" symbol
         display_symbol(LCD_UNIT_L1_M, SEG_ON);
 
@@ -269,6 +277,7 @@ void mx_altitude(u8 line)
         // Limits for set_value function
         limit_low = -100;
         limit_high = 4000;
+#ifndef CONFIG_METRIC_ONLY
     }
     else                        // English units
     {
@@ -285,6 +294,7 @@ void mx_altitude(u8 line)
         limit_low = -500;
         limit_high = 9999;
     }
+#endif
 
     // Loop values until all are set or user breaks set
     while (1)
@@ -296,10 +306,11 @@ void mx_altitude(u8 line)
         // Button STAR (short): save, then exit
         if (button.flag.star)
         {
+#ifndef CONFIG_METRIC_ONLY
             // When using English units, convert ft back to m before updating pressure table
             if (!sys.flag.use_metric_units)
                 altitude = convert_ft_to_m((s16) altitude);
-
+#endif
             // Update pressure table
             update_pressure_table((s16) altitude, sAlt.pressure, sAlt.temperature);
 
@@ -340,18 +351,20 @@ void display_altitude(u8 line, u8 update)
 
         // Start measurement
         start_altitude_measurement();
-
+#ifndef CONFIG_METRIC_ONLY
         if (sys.flag.use_metric_units)
         {
+#endif
             // Display "m" symbol
             display_symbol(LCD_UNIT_L1_M, SEG_ON);
+#ifndef CONFIG_METRIC_ONLY
         }
         else
         {
             // Display "ft" symbol
             display_symbol(LCD_UNIT_L1_FT, SEG_ON);
         }
-
+#endif
         // Display altitude
         display_altitude(LINE1, DISPLAY_LINE_UPDATE_PARTIAL);
     }
@@ -360,8 +373,10 @@ void display_altitude(u8 line, u8 update)
         // Update display only while measurement is active
         if (sAlt.timeout > 0)
         {
+#ifndef CONFIG_METRIC_ONLY
             if (sys.flag.use_metric_units)
             {
+#endif
                 // Display altitude in xxxx m format, allow 3 leading blank digits
                 if (sAlt.altitude >= 0)
                 {
@@ -375,6 +390,7 @@ void display_altitude(u8 line, u8 update)
                     display_symbol(LCD_SYMB_ARROW_UP, SEG_OFF);
                     display_symbol(LCD_SYMB_ARROW_DOWN, SEG_ON);
                 }
+#ifndef CONFIG_METRIC_ONLY
             }
             else
             {
@@ -399,6 +415,7 @@ void display_altitude(u8 line, u8 update)
                     display_symbol(LCD_SYMB_ARROW_DOWN, SEG_ON);
                 }
             }
+#endif
             display_chars(LCD_SEG_L1_3_0, str, SEG_ON);
         }
     }

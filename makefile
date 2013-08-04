@@ -6,6 +6,8 @@ CC  = msp430-gcc
 LD  = msp430-gcc
 PYTHON := $(shell which python2 || which python)
 
+include config.mk
+
 PROJ_DIR	=.
 BUILD_DIR = build
 CFLAGS_PRODUCTION = -Os -Wall#-Wl,--gc-sections # -ffunction-sections # -fdata-sections  -fno-inline-functions# -O optimizes
@@ -21,7 +23,7 @@ CC_INCLUDE = -I$(PROJ_DIR)/ -I$(PROJ_DIR)/include/ -I$(PROJ_DIR)/gcc/ -I$(PROJ_D
 
 CC_COPT		=  $(CC_CMACH) $(CC_DMACH) $(CC_DOPT)  $(CC_INCLUDE) 
 
-LOGIC_SOURCE = logic/acceleration.c logic/alarm.c logic/altitude.c logic/battery.c  logic/clock.c logic/date.c logic/menu.c logic/rfbsl.c logic/rfsimpliciti.c logic/stopwatch.c logic/temperature.c logic/test.c logic/user.c logic/bluerobin.c 
+LOGIC_SOURCE = logic/acceleration.c logic/alarm.c logic/altitude.c logic/battery.c  logic/clock.c logic/date.c logic/menu.c logic/rfbsl.c logic/rfsimpliciti.c logic/stopwatch.c logic/temperature.c logic/test.c logic/user.c  
 
 LOGIC_O = $(addsuffix .o,$(basename $(LOGIC_SOURCE)))
 
@@ -35,16 +37,16 @@ SIMPLICICTI_SOURCE = $(SIMPLICICTI_SOURCE_ODD) simpliciti/Components/bsp/bsp.c s
 
 SIMPLICICTI_O = $(addsuffix .o,$(basename $(SIMPLICICTI_SOURCE)))
 
-SIMU_SOURCE = bluerobin/BlueRobin_RX_simu.c 
+FEATURES_SOURCE = $(CONFIG_BLUEROBIN_FN) 
 
-SIMU_O = $(addsuffix .o,$(basename $(SIMU_SOURCE)))
+FEATURES_O = $(addsuffix .o,$(basename $(FEATURES_SOURCE)))
 
 
 MAIN_SOURCE = main.c  gcc/intrinsics.c 
 
 MAIN_O = main.o gcc/intrinsics.o 
 
-ALL_O = $(LOGIC_O) $(DRIVER_O) $(SIMPLICICTI_O) $(SIMU_O) $(MAIN_O)
+ALL_O = $(LOGIC_O) $(DRIVER_O) $(SIMPLICICTI_O) $(FEATURES_O) $(MAIN_O)
 
 ALL_S = $(addsuffix .s,$(basename $(LOGIC_SOURCE))) $(addsuffix .s,$(basename $(DRIVER_SOURCE))) $(addsuffix .s,$(basename $(SIMPLICICTI_SOURCE)))  \
         $(addsuffix .s,$(basename $(MAIN_SOURCE)))  

@@ -174,6 +174,7 @@ void test_mode(void)
                             }
                             as_stop();
                             break;
+#ifdef CONFIG_BLUEROBIN  
                         case 4: // BlueRobin test
                             button.flag.up = 1;
                             sx_bluerobin(LINE1);
@@ -182,6 +183,7 @@ void test_mode(void)
                             display_heartrate(LINE1, DISPLAY_LINE_UPDATE_FULL);
                             stop_bluerobin();
                             break;
+#endif
                     }
 
                     // Debounce button

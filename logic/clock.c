@@ -71,9 +71,11 @@ void conv_24H_to_12H(u8 * hours24, u8 * hours12, u8 * timeAMorPM);
 struct time sTime;
 
 // Display values for time format selection
+#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
 const u8 selection_Timeformat[][4] = {
     "24H", "12H"
 };
+#endif
 
 // *************************************************************************************************
 // Extern section
@@ -153,6 +155,7 @@ void clock_tick(void)
 // @param       u8 hour         Hour in 24H format
 // @return      u8                      Hour in 12H format
 // *************************************************************************************************
+#if (OPTION_TIME_DISPLAY > CLOCK_24HR)
 u8 convert_hour_to_12H_format(u8 hour)
 {
     // 00:00 .. 11:59 --> AM 12:00 .. 11:59
@@ -181,6 +184,7 @@ u8 is_hour_am(u8 hour)
         return (0);
 }
 
+#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
 // *************************************************************************************************
 // @fn          display_selection_Timeformat
 // @brief       Display time format 12H / 24H.
@@ -195,6 +199,10 @@ void display_selection_Timeformat1(u8 segments, u32 index, u8 digits, u8 blanks)
     if (index < 2)
         display_chars(segments, (u8 *) selection_Timeformat[index], SEG_ON_BLINK_ON);
 }
+#endif // CLOCK_DISPLAY_SELECT
+
+#endif //OPTION_TIME_DISPLAY
+
 
 // *************************************************************************************************
 // @fn          mx_time
@@ -269,6 +277,7 @@ void mx_time(u8 line)
 
         switch (select)
         {
+#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
             case 0:            // Clear LINE1 and LINE2 and AM icon - required when coming back from
                                // set_value(seconds)
                 clear_display();
@@ -286,7 +295,9 @@ void mx_time(u8 line)
                     sys.flag.use_metric_units = 0;
                 select = 1;
                 break;
-
+#else
+			case 0:
+#endif
             case 1:            // Display HH:MM (LINE1) and .SS (LINE2)
                 str = int_to_array(hours, 2, 0);
                 display_chars(LCD_SEG_L1_3_2, str, SEG_ON);
@@ -363,23 +374,32 @@ void display_time(u8 line, u8 update)
                 switch (sTime.drawFlag)
                 {
                     case 3:
+		#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
                         if (sys.flag.use_metric_units)
                         {
+		#endif
+		#if ((OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT) || (OPTION_TIME_DISPLAY == CLOCK_24HR))
                             // Display 24H time "HH"
                             display_chars(switch_seg(line, LCD_SEG_L1_3_2,
                                                      LCD_SEG_L2_3_2), int_to_array(sTime.hour, 2,
                                                                                    0), SEG_ON);
+		#endif
+		#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
                         }
                         else
                         {
+		#endif
+		#if ((OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT) || (OPTION_TIME_DISPLAY == CLOCK_AM_PM))
                             // Display 12H time "HH" + AM/PM
                             hour12 = convert_hour_to_12H_format(sTime.hour);
                             display_chars(switch_seg(line, LCD_SEG_L1_3_2,
                                                      LCD_SEG_L2_3_2), int_to_array(hour12, 2,
                                                                                    0), SEG_ON);
                             display_am_pm_symbol(sTime.hour);
+		#endif
+		#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
                         }
-
+		#endif
                     case 2:
                         display_chars(switch_seg(line, LCD_SEG_L1_1_0,
                                                  LCD_SEG_L2_1_0), int_to_array(sTime.minute, 2,
@@ -399,15 +419,22 @@ void display_time(u8 line, u8 update)
         // Full update
         if (sTime.line1ViewStyle == DISPLAY_DEFAULT_VIEW)
         {
+	#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
             // Display 24H/12H time
             if (sys.flag.use_metric_units)
             {
+	#endif
+	#if ((OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT) || (OPTION_TIME_DISPLAY == CLOCK_24HR))
                 // Display 24H time "HH"
                 display_chars(switch_seg(line, LCD_SEG_L1_3_2,
                                          LCD_SEG_L2_3_2), int_to_array(sTime.hour, 2, 0), SEG_ON);
+	#endif
+	#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
             }
             else
             {
+	#endif
+	#if ((OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT) || (OPTION_TIME_DISPLAY == CLOCK_AM_PM))
                 // Display 12H time "HH" + AM/PM information
                 hour12 = convert_hour_to_12H_format(sTime.hour);
                 display_chars(switch_seg(line, LCD_SEG_L1_3_2,
@@ -417,7 +444,10 @@ void display_time(u8 line, u8 update)
                 {
                     display_am_pm_symbol(sTime.hour);
                 }
+	#endif
+	#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
             }
+	#endif
 
             // Display minute
             display_chars(switch_seg(line, LCD_SEG_L1_1_0,

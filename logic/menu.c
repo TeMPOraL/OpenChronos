@@ -151,9 +151,14 @@ const struct menu menu_L1_Altitude = {
     FUNCTION(mx_altitude),            // sub menu function
     FUNCTION(display_altitude),       // display function
     FUNCTION(update_time),            // new display data
+#ifdef CONFIG_BLUEROBIN  
     &menu_L1_Heartrate,
+#else
+    &menu_L1_Acceleration,
+#endif
 };
 
+#ifdef CONFIG_BLUEROBIN  
 // Line1 - Heart Rate
 const struct menu menu_L1_Heartrate = {
     FUNCTION(sx_bluerobin),           // direct function
@@ -171,7 +176,7 @@ const struct menu menu_L1_Speed = {
     FUNCTION(update_time),            // new display data
     &menu_L1_Acceleration,
 };
-
+#endif
 // Line1 - Acceleration
 const struct menu menu_L1_Acceleration = {
     FUNCTION(sx_acceleration),        // direct function
@@ -232,9 +237,13 @@ const struct menu menu_L2_Sync = {
     FUNCTION(dummy),                  // sub menu function
     FUNCTION(display_sync),           // display function
     FUNCTION(update_time),            // new display data
+#ifdef CONFIG_BLUEROBIN  
     &menu_L2_CalDist,
+#else
+    &menu_L2_RFBSL,
+#endif
 };
-
+#ifdef CONFIG_BLUEROBIN  
 // Line2 - Calories/Distance
 const struct menu menu_L2_CalDist = {
     FUNCTION(sx_caldist),             // direct function
@@ -243,6 +252,7 @@ const struct menu menu_L2_CalDist = {
     FUNCTION(update_time),            // new display data
     &menu_L2_RFBSL,
 };
+#endif
 
 // Line2 - RFBSL
 const struct menu menu_L2_RFBSL = {

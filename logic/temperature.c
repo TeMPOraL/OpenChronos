@@ -182,7 +182,7 @@ void mx_temperature(u8 line)
 
     // Clear display
     clear_display_all();
-
+#ifndef CONFIG_METRIC_ONLY
     // When using English units, convert internal °C to °F before handing over value to set_value
     // function
     if (!sys.flag.use_metric_units)
@@ -193,10 +193,13 @@ void mx_temperature(u8 line)
     }
     else
     {
+#endif
         // Convert global variable to local variable
         temperature = sTemp.degrees;
         temperature0 = temperature;
+#ifndef CONFIG_METRIC_ONLY
     }
+#endif
 
     // Loop values until all are set or user breaks set
     while (1)
@@ -208,12 +211,14 @@ void mx_temperature(u8 line)
         // Button STAR (short): save, then exit
         if (button.flag.star)
         {
+	#ifndef CONFIG_METRIC_ONLY
             // For English units, convert set °F to °C
             if (!sys.flag.use_metric_units)
             {
                 temperature1 = convert_F_to_C(temperature);
             }
             else
+	#endif
             {
                 temperature1 = temperature;
             }
@@ -230,11 +235,12 @@ void mx_temperature(u8 line)
 
             break;
         }
-
+	#ifndef CONFIG_METRIC_ONLY
         // Display °C or °F depending on unit system
         if (sys.flag.use_metric_units)
             display_char(LCD_SEG_L1_0, 'C', SEG_ON);
         else
+	#endif
             display_char(LCD_SEG_L1_0, 'F', SEG_ON);
         display_symbol(LCD_SEG_L1_DP1, SEG_ON);
         display_symbol(LCD_UNIT_L1_DEGREE, SEG_ON);
@@ -270,11 +276,14 @@ void display_temperature(u8 line, u8 update)
         // Display °C / °F
         display_symbol(LCD_SEG_L1_DP1, SEG_ON);
         display_symbol(LCD_UNIT_L1_DEGREE, SEG_ON);
+#ifndef CONFIG_METRIC_ONLY
         if (sys.flag.use_metric_units)
+#endif
             display_char(LCD_SEG_L1_0, 'C', SEG_ON);
+#ifndef CONFIG_METRIC_ONLY
         else
             display_char(LCD_SEG_L1_0, 'F', SEG_ON);
-
+#endif
         // Perform one temperature measurement with disabled filter
         temperature_measurement(FILTER_OFF);
 
@@ -283,12 +292,14 @@ void display_temperature(u8 line, u8 update)
     }
     else if (update == DISPLAY_LINE_UPDATE_PARTIAL)
     {
+#ifndef CONFIG_METRIC_ONLY
         // When using English units, convert °C to °F (temp*1.8+32)
         if (!sys.flag.use_metric_units)
         {
             temperature = convert_C_to_F(sTemp.degrees);
         }
         else
+#endif
         {
             temperature = sTemp.degrees;
         }

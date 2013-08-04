@@ -192,13 +192,16 @@ void mx_date(u8 line)
     // LINE1: DD.MM (metric units) or MM.DD (English units)
     // LINE2: YYYY (will be drawn by set_value)
 
+#ifndef CONFIG_METRIC_ONLY
     if (sys.flag.use_metric_units)
     {
+#endif
         str = int_to_array(day, 2, 0);
         display_chars(LCD_SEG_L1_3_2, str, SEG_ON);
 
         str1 = int_to_array(month, 2, 0);
         display_chars(LCD_SEG_L1_1_0, str1, SEG_ON);
+#ifndef CONFIG_METRIC_ONLY
     }
     else                        // English units
     {
@@ -208,6 +211,7 @@ void mx_date(u8 line)
         str1 = int_to_array(month, 2, 0);
         display_chars(LCD_SEG_L1_3_2, str1, SEG_ON);
     }
+#endif
     display_symbol(LCD_SEG_L1_DP1, SEG_ON);
 
     // Loop values until all are set or user breaks set
@@ -238,11 +242,14 @@ void mx_date(u8 line)
                 select = 1;
                 break;
             case 1:            // Set month
+	#ifndef CONFIG_METRIC_ONLY
                 if (sys.flag.use_metric_units)
                 {
+	#endif
                     set_value(
                         &month, 2, 0, 1, 12, SETVALUE_ROLLOVER_VALUE + SETVALUE_DISPLAY_VALUE +
                         SETVALUE_NEXT_VALUE, LCD_SEG_L1_1_0, display_value);
+	#ifndef CONFIG_METRIC_ONLY
                 }
                 else           // English units
                 {
@@ -250,14 +257,18 @@ void mx_date(u8 line)
                         &month, 2, 0, 1, 12, SETVALUE_ROLLOVER_VALUE + SETVALUE_DISPLAY_VALUE +
                         SETVALUE_NEXT_VALUE, LCD_SEG_L1_3_2, display_value);
                 }
+	#endif
                 select = 2;
                 break;
             case 2:            // Set day
+	#ifndef CONFIG_METRIC_ONLY
                 if (sys.flag.use_metric_units)
                 {
+	#endif
                     set_value(
                         &day, 2, 0, 1, max_days, SETVALUE_ROLLOVER_VALUE + SETVALUE_DISPLAY_VALUE +
                         SETVALUE_NEXT_VALUE, LCD_SEG_L1_3_2, display_value);
+	#ifndef CONFIG_METRIC_ONLY
                 }
                 else           // English units
                 {
@@ -265,6 +276,7 @@ void mx_date(u8 line)
                         &day, 2, 0, 1, max_days, SETVALUE_ROLLOVER_VALUE + SETVALUE_DISPLAY_VALUE +
                         SETVALUE_NEXT_VALUE, LCD_SEG_L1_1_0, display_value);
                 }
+	#endif
                 select = 0;
                 break;
         }
@@ -287,11 +299,13 @@ void mx_date(u8 line)
 // *************************************************************************************************
 void sx_date(u8 line)
 {
+#ifdef CONFIG_DAY_OF_WEEK
     // Toggle display items
-    if (sDate.display == DISPLAY_DEFAULT_VIEW)
-        sDate.display = DISPLAY_ALTERNATIVE_VIEW;
-    else
-        sDate.display = DISPLAY_DEFAULT_VIEW;
+    if (++sDate.display > DISPLAY_ALTERNATIVE2_VIEW)
+#else
+    if (++sDate.display > DISPLAY_ALTERNATIVE_VIEW)
+#endif
+            sDate.display = DISPLAY_DEFAULT_VIEW;
 }
 
 // *************************************************************************************************
@@ -304,46 +318,135 @@ void sx_date(u8 line)
 // *************************************************************************************************
 void display_date(u8 line, u8 update)
 {
+#ifdef CONFIG_DAY_OF_WEEK
+	const u8 weekDayStr[7][3] = {"SUN","MON","TUE","WED","THU","FRI","SAT"};
+#endif
     u8 *str;
 
     if (update == DISPLAY_LINE_UPDATE_FULL)
     {
-        if (sDate.display == DISPLAY_DEFAULT_VIEW)
-        {
-            // Convert day to string
-            str = int_to_array(sDate.day, 2, 0);
-            if (sys.flag.use_metric_units)
-            {
-                display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_3_2), str, SEG_ON);
-            }
-            else
-            {
-                display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
-            }
+        switch (sDate.display)
+		{
+			case DISPLAY_DEFAULT_VIEW: //WWW.DD
+				// Convert day to string
+#ifdef CONFIG_DAY_OF_WEEK
+				str = int_to_array(sDate.day, 2, 1);
+				display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
 
-            // Convert month to string
-            str = int_to_array(sDate.month, 2, 0);
-            if (sys.flag.use_metric_units)
-            {
-                display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
-            }
-            else
-            {
-                display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_3_2), str, SEG_ON);
-            }
+				//pfs BEGIN replace year display with day of week
+				//pfs algorith from http://klausler.com/new-dayofweek.html
+				#define BASE_YEAR 2001 // not a leap year, so no need to add 1
+				u8 skew;
+				skew = (sDate.year - BASE_YEAR)+(sDate.year - BASE_YEAR)/4; // compute number of leap years since BASE_YEAR
+				if ((29 == get_numberOfDays(2, sDate.year)) && (sDate.month < 3))
+				  skew--; // if this is a leap year but before February 29
+				skew = (skew + sDate.day); // add day of current month
+				//add this month's skew value
+				switch(sDate.month) {
+				  case 5:
+					skew += 1;
+					break;
+				  case 8:
+					skew += 2;
+					break;
+				  case 2:
+				  case 3:
+				  case 11:
+					skew += 3;
+					break;
+				  case 6:
+					skew += 4;
+					break;
+				  case 9:
+				  case 12:
+					skew += 5;
+					break;
+				  case 4:
+				  case 7:
+					skew += 6;
+					break;
+				  default:  //January and October
+					break;
+				}
+				skew = skew%7;
+				str = (u8 *)weekDayStr[skew];
+				display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_4_2), str, SEG_ON);
+				display_symbol(switch_seg(line, LCD_SEG_L1_DP1, LCD_SEG_L2_DP), SEG_ON);
+				break;
+#else
+		               // Convert day to string
+			        str = int_to_array(sDate.day, 2, 0);
+			#ifndef CONFIG_METRIC_ONLY
+			        if (sys.flag.use_metric_units)
+		                {
+			#endif
+			                display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_3_2), str, SEG_ON);
+			#ifndef CONFIG_METRIC_ONLY
+		                }
+		                else
+			        {
+			                display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
+		                }
+			#endif
+
+		               // Convert month to string
+		               str = int_to_array(sDate.month, 2, 0);
+			#ifndef CONFIG_METRIC_ONLY
+		              if (sys.flag.use_metric_units)
+		              {
+			                display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
+		              }
+        		      else
+	                      {
+			                display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_3_2), str, SEG_ON);
+		              }
+			#else
+		              display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
+#endif //CONFIG_METRIC_ONLY
 
             // Display "." to separate day and month
-            display_symbol(switch_seg(line, LCD_SEG_L1_DP1, LCD_SEG_L2_DP), SEG_ON);
-        }
-        else
-        {
-            // Convert year to string
-            str = int_to_array(sDate.year, 4, 0);
-            display_chars(switch_seg(line, LCD_SEG_L1_3_0, LCD_SEG_L2_3_0), str, SEG_ON);
+		              display_symbol(switch_seg(line, LCD_SEG_L1_DP1, LCD_SEG_L2_DP), SEG_ON);
+			      break;
+#endif //CONFIG_DAY_OF_WEEK
+            case DISPLAY_ALTERNATIVE_VIEW: //MM  DD
+#ifdef CONFIG_DAY_OF_WEEK
+		// Convert day to string
+		display_symbol(switch_seg(line, LCD_SEG_L1_DP1, LCD_SEG_L2_DP), SEG_ON);
+		// display date
+		#ifndef CONFIG_METRIC_ONLY
+		if (!sys.flag.use_metric_units) {
+			str = int_to_array(sDate.day, 2, 0);
+			display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
 
-            // Clear "."
-            display_symbol(switch_seg(line, LCD_SEG_L1_DP1, LCD_SEG_L2_DP), SEG_OFF);
-        }
+			// Convert month to string
+			str = int_to_array(sDate.month, 2, 1);
+			display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_3_2), str, SEG_ON);
+		} 
+		else 
+		#else
+		if (1) 
+		#endif //CONFIG_METRIC_ONLY
+		{
+			str = int_to_array(sDate.day, 2, 0);
+			display_chars(switch_seg(line, LCD_SEG_L1_3_2, LCD_SEG_L2_3_2), str, SEG_ON);
+					
+			str = int_to_array(sDate.month, 2, 0);
+			display_chars(switch_seg(line, LCD_SEG_L1_1_0, LCD_SEG_L2_1_0), str, SEG_ON);
+		}
+		break;
+	    case DISPLAY_ALTERNATIVE2_VIEW: //YYYY
+#endif //CONFIG_DAY_OF_WEEK
+			// Convert year to string
+			str = int_to_array(sDate.year, 4, 0);
+			display_chars(switch_seg(line, LCD_SEG_L1_3_0, LCD_SEG_L2_3_0), str, SEG_ON);
+	
+			// Clear "."
+	                display_symbol(switch_seg(line, LCD_SEG_L1_DP1, LCD_SEG_L2_DP), SEG_OFF);
+		break;
+		default:
+			display_time(line, update);
+			break;
+	}
     }
     else if (update == DISPLAY_LINE_CLEAR)
     {

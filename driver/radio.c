@@ -168,6 +168,7 @@ __interrupt void radio_ISR(void)
     {
         MRFI_RadioIsr();
     }
+#ifdef CONFIG_BLUEROBIN  
     else                                  // BlueRobin packet end interrupt service routine
     {
         if (rf1aivec == RF1AIV_RFIFG9)
@@ -183,5 +184,6 @@ __interrupt void radio_ISR(void)
             asm ("	nop"); // break here
         }
     }
+#endif
 }
 

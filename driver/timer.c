@@ -270,7 +270,11 @@ __interrupt void TIMER0_A0_ISR(void)
     display.flag.update_time = 1;
 
     // While SimpliciTI stack operates or BlueRobin searches, freeze system state
-    if (is_rf() || is_bluerobin_searching())
+    if (is_rf() 
+#ifdef CONFIG_BLUEROBIN  
+	|| is_bluerobin_searching()
+#endif
+     )
     {
         // SimpliciTI automatic timeout
         if (sRFsmpl.timeout == 0)
@@ -377,10 +381,11 @@ __interrupt void TIMER0_A0_ISR(void)
             request.flag.acceleration_measurement = 1;
     }
 
+#ifdef CONFIG_BLUEROBIN  
     // If BlueRobin transmitter is connected, get data from API
     if (is_bluerobin())
         get_bluerobin_data();
-
+#endif
     // If battery is low, decrement display counter
     if (sys.flag.low_battery)
     {
@@ -525,7 +530,9 @@ __interrupt void TIMER0_A1_5_ISR(void)
     {
         // Timer0_A1    BlueRobin timer
         case 0x02:             // Timer0_A1 handler
+#ifdef CONFIG_BLUEROBIN  
             BRRX_TimerTask_v();
+#endif
             break;
 
         // Timer0_A2    1/1 or 1/100 sec Stopwatch

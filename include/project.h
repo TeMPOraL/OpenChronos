@@ -40,7 +40,7 @@
 // Include section
 #include <cc430x613x.h>
 #include <bm.h>
-
+#include "config.h"
 // *************************************************************************************************
 // Defines section
 

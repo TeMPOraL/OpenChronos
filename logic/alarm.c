@@ -238,14 +238,21 @@ void display_alarm(u8 line, u8 update)
 
     if (update == DISPLAY_LINE_UPDATE_FULL)
     {
+	#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
         if (sys.flag.use_metric_units)
         {
+	#endif
+	#if ((OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT) || (OPTION_TIME_DISPLAY == CLOCK_24HR))
             // Display 24H alarm time "HH:MM"
             display_chars(switch_seg(line, LCD_SEG_L1_3_2,
                                      LCD_SEG_L2_3_2), int_to_array(sAlarm.hour, 2, 0), SEG_ON);
+	#endif
+	#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
         }
         else
         {
+	#endif
+	#if ((OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT) || (OPTION_TIME_DISPLAY == CLOCK_AM_PM))
             // Display 12H alarm time "HH:MM" + AM/PM
             hour12 = convert_hour_to_12H_format(sAlarm.hour);
             display_chars(switch_seg(line, LCD_SEG_L1_3_2,
@@ -253,7 +260,10 @@ void display_alarm(u8 line, u8 update)
 
             // Display AM/PM symbol
             display_am_pm_symbol(sAlarm.hour);
+	#endif
+	#if (OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT)
         }
+	#endif
         display_chars(switch_seg(line, LCD_SEG_L1_1_0,
                                  LCD_SEG_L2_1_0), int_to_array(sAlarm.minute, 2, 0), SEG_ON);
         display_symbol(switch_seg(line, LCD_SEG_L1_COL, LCD_SEG_L2_COL0), SEG_ON);

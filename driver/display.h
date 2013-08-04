@@ -41,6 +41,24 @@
 
 #include <project.h>
 
+/*
+ * Set some options at compile time for how the time is displayed
+ * The options are, in order of code space used-
+ * OPTION_TIME_DISPLAY == CLOCK_24HR
+ * OPTION_TIME_DISPLAY == CLOCK_AM_PM
+ * OPTION_TIME_DISPLAY == CLOCK_DISPLAY_SELECT
+ */
+
+#define CLOCK_24HR              0
+#define CLOCK_AM_PM             1
+#define CLOCK_DISPLAY_SELECT    2
+
+#ifndef OPTION_TIME_DISPLAY
+#warning "OPTION_TIME_DISPLAY not defined, 0 = 24Hr, 1 = AM/PM, 2 = selectable"
+#endif
+
+
+
 // *************************************************************************************************
 // Extern section
 
@@ -91,6 +109,7 @@ extern volatile s_display_flags display;
 // Definitions for line view style
 #define DISPLAY_DEFAULT_VIEW                    (0u)
 #define DISPLAY_ALTERNATIVE_VIEW                (1u)
+#define DISPLAY_ALTERNATIVE2_VIEW               (2u)
 
 // Definitions for line access
 #define LINE1                                                   (1u)

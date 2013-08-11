@@ -380,10 +380,11 @@ void init_global_variables(void)
 
     // Reset stopwatch
     reset_stopwatch();
-
+#ifdef CONFIG_ALTITUDE
     // Reset altitude measurement
     reset_altitude_measurement();
 
+#endif
     // Reset acceleration measurement
     reset_acceleration();
 
@@ -557,10 +558,11 @@ void process_requests(void)
     if (request.flag.temperature_measurement)
         temperature_measurement(FILTER_ON);
 
+#ifdef CONFIG_ALTITUDE
     // Do pressure measurement
     if (request.flag.altitude_measurement)
         do_altitude_measurement(FILTER_ON);
-
+#endif
     // Do acceleration measurement
     if (request.flag.acceleration_measurement)
         do_acceleration_measurement();
@@ -725,7 +727,9 @@ void read_calibration_values(void)
         simpliciti_ed_address[1] = 0x56;
         simpliciti_ed_address[2] = 0x34;
         simpliciti_ed_address[3] = 0x12;
+#ifdef CONFIG_ALTITUDE
         sAlt.altitude_offset = 0;
+#endif
     } else
     {
         // Assign calibration data to global variables
@@ -741,6 +745,7 @@ void read_calibration_values(void)
         simpliciti_ed_address[1] = cal_data[7];
         simpliciti_ed_address[2] = cal_data[8];
         simpliciti_ed_address[3] = cal_data[9];
+#ifdef CONFIG_ALTITUDE
         // S/W version byte set during calibration?
         if (cal_data[12] != 0xFF)
         {
@@ -749,6 +754,7 @@ void read_calibration_values(void)
         {
             sAlt.altitude_offset = 0;
         }
+#endif
     }
 }
 

@@ -23,7 +23,7 @@ CC_INCLUDE = -I$(PROJ_DIR)/ -I$(PROJ_DIR)/include/ -I$(PROJ_DIR)/gcc/ -I$(PROJ_D
 
 CC_COPT		=  $(CC_CMACH) $(CC_DMACH) $(CC_DOPT)  $(CC_INCLUDE) 
 
-LOGIC_SOURCE = logic/acceleration.c logic/alarm.c logic/altitude.c logic/battery.c  logic/clock.c logic/date.c logic/menu.c logic/rfbsl.c logic/rfsimpliciti.c logic/stopwatch.c logic/temperature.c logic/test.c logic/user.c  
+LOGIC_SOURCE = logic/acceleration.c logic/alarm.c logic/battery.c  logic/clock.c logic/date.c logic/menu.c logic/rfbsl.c logic/rfsimpliciti.c logic/stopwatch.c logic/temperature.c logic/test.c logic/user.c  
 
 LOGIC_O = $(addsuffix .o,$(basename $(LOGIC_SOURCE)))
 
@@ -37,7 +37,7 @@ SIMPLICICTI_SOURCE = $(SIMPLICICTI_SOURCE_ODD) simpliciti/Components/bsp/bsp.c s
 
 SIMPLICICTI_O = $(addsuffix .o,$(basename $(SIMPLICICTI_SOURCE)))
 
-FEATURES_SOURCE = $(CONFIG_BLUEROBIN_FN) 
+FEATURES_SOURCE = $(CONFIG_BLUEROBIN_FN) $(CONFIG_ALTITUDE_FN) 
 
 FEATURES_O = $(addsuffix .o,$(basename $(FEATURES_SOURCE)))
 

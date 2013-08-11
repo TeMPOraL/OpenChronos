@@ -142,22 +142,49 @@ const struct menu menu_L1_Temperature = {
     FUNCTION(mx_temperature),         // sub menu function
     FUNCTION(display_temperature),    // display function
     FUNCTION(update_temperature),     // new display data
+#ifdef CONFIG_ALTITUDE
     &menu_L1_Altitude,
+#else
+#ifdef CONFIG_BLUEROBIN  
+    &menu_L1_Heartrate,
+#else
+    &menu_L1_Acceleration,
+#endif
+#endif
 };
 
-// Line1 - Altitude
+#ifdef CONFIG_ALTITUDE// Line1 - Altitude
 const struct menu menu_L1_Altitude = {
     FUNCTION(sx_altitude),            // direct function
     FUNCTION(mx_altitude),            // sub menu function
     FUNCTION(display_altitude),       // display function
     FUNCTION(update_time),            // new display data
+#ifdef CONFIG_ALTI_ACCUMULATOR
+    &menu_L1_AltAccum,
+#else
+#ifdef CONFIG_BLUEROBIN  
+    &menu_L1_Heartrate,
+#else
+    &menu_L1_Acceleration,
+#endif
+#endif
+};
+#endif
+#ifdef CONFIG_ALTI_ACCUMULATOR
+// Line1 - Altitude Accumulator
+const struct menu menu_L1_AltAccum =
+{
+    FUNCTION(sx_alt_accumulator),		// direct function
+    FUNCTION(mx_alt_accumulator),		// sub menu function
+    FUNCTION(display_alt_accumulator),	// display function
+    FUNCTION(update_time),			// new display data
 #ifdef CONFIG_BLUEROBIN  
     &menu_L1_Heartrate,
 #else
     &menu_L1_Acceleration,
 #endif
 };
-
+#endif
 #ifdef CONFIG_BLUEROBIN  
 // Line1 - Heart Rate
 const struct menu menu_L1_Heartrate = {

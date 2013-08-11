@@ -17,5 +17,7 @@
 #define CONFIG_TEST
 #define CONFIG_FAST_LCD_REFRESH
 // CONFIG_BLUEROBIN is not set
+#define CONFIG_ALTITUDE
+#define CONFIG_ALTI_ACCUMULATOR
 
 #endif // _CONFIG_H_

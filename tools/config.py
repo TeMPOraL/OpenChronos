@@ -142,12 +142,14 @@ DATA["CONFIG_BLUEROBIN"] = {
 #                "Designed to be used with uberclock",
 #}
 
-#DATA["CONFIG_ALTITUDE"] = {
-#        "name": "Altitude (1202 bytes)",
-#        "depends": [],
-#        "default": True,
-#        "help": "Messures altitude"
-#        }
+DATA["CONFIG_ALTITUDE"] = {
+        "name": "Altitude (1202 bytes)",
+        "depends": [],
+        "default": True,
+	"isLinked": True,
+	"filenames":"logic/altitude.c",
+        "help": "Messures altitude"
+        }
 
 
 #DATA["CONFIG_VARIO"] = {
@@ -155,12 +157,12 @@ DATA["CONFIG_BLUEROBIN"] = {
 #        "depends": [],
 #        "default": False}
 
-#DATA["CONFIG_ALTI_ACCUMULATOR"] = {
-#	"name": "Altitude accumulator (1068 bytes)",
-#	"depends": [],
-#	"default": False,
-#	"help": "If active take altitude measurement once per minute and accumulate all ascending vertical meters."
-#	}
+DATA["CONFIG_ALTI_ACCUMULATOR"] = {
+	"name": "Altitude accumulator (1068 bytes)",
+	"depends": ["CONFIG_ALTITUDE"],
+	"default": False,
+	"help": "If active take altitude measurement once per minute and accumulate all ascending vertical meters."
+	}
 
 #DATA["CONFIG_PROUT"] = {
 #        "name": "Simple example that displays a text (238 bytes)",

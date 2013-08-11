@@ -143,6 +143,7 @@ void test_mode(void)
                             while (BUTTON_STAR_IS_PRESSED && BUTTON_UP_IS_PRESSED) ;
                             break;
                         case 1: // Altitude measurement
+#ifdef CONFIG_ALTITUDE
                             display_altitude(LINE1, DISPLAY_LINE_UPDATE_FULL);
                             for (i = 0; i < 2; i++)
                             {
@@ -151,6 +152,7 @@ void test_mode(void)
                                 display_altitude(LINE1, DISPLAY_LINE_UPDATE_PARTIAL);
                             }
                             stop_altitude_measurement();
+#endif
                             break;
                         case 2: // Temperature measurement
                             display_temperature(LINE1, DISPLAY_LINE_UPDATE_FULL);

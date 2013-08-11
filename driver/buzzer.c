@@ -75,6 +75,7 @@ void reset_buzzer(void)
 {
     sBuzzer.time = 0;
     sBuzzer.state = BUZZER_OFF;
+    sBuzzer.steps	= BUZZER_TIMER_STEPS;
 }
 
 // *************************************************************************************************
@@ -99,7 +100,7 @@ void start_buzzer(u8 cycles, u16 on_time, u16 off_time)
         TA1CTL = TACLR | MC_1 | TASSEL__ACLK;
 
         // Set PWM frequency
-        TA1CCR0 = BUZZER_TIMER_STEPS;
+        TA1CCR0 = sBuzzer.steps;
 
         // Enable IRQ, set output mode "toggle"
         TA1CCTL0 = OUTMOD_4;
@@ -119,6 +120,11 @@ void start_buzzer(u8 cycles, u16 on_time, u16 off_time)
     }
 }
 
+void start_buzzer_steps(u8 cycles, u16 on_time, u16 off_time, u8 steps )
+{
+   sBuzzer.steps = steps;
+   start_buzzer( cycles, on_time, off_time );
+}
 // *************************************************************************************************
 // @fn          toggle_buzzer
 // @brief       Keeps track of buzzer on/off duty cycle

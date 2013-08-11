@@ -58,7 +58,9 @@
 #include "rfsimpliciti.h"
 #include "acceleration.h"
 #include "rfbsl.h"
-
+#ifdef CONFIG_VARIO
+#include "vario.h"
+#endif
 // *************************************************************************************************
 // Defines section
 #define FUNCTION(function)  function
@@ -170,7 +172,7 @@ const struct menu menu_L1_Altitude = {
 #endif
 };
 #endif
-#ifdef CONFIG_ALTI_ACCUMULATOR
+#if (defined CONFIG_ALTI_ACCUMULATOR) && (defined CONFIG_ALTITUDE)
 // Line1 - Altitude Accumulator
 const struct menu menu_L1_AltAccum =
 {
@@ -219,8 +221,23 @@ const struct menu menu_L2_Date = {
     FUNCTION(mx_date),                // sub menu function
     FUNCTION(display_date),           // display function
     FUNCTION(update_date),            // new display data
+#ifdef CONFIG_VARIO
+    &menu_L2_Vario,
+#else
     &menu_L2_Stopwatch,
+#endif
 };
+#ifdef CONFIG_VARIO
+//Line 2 - Vario
+const struct menu menu_L2_Vario = 
+{
+	FUNCTION(sx_vario),		// direct function
+	FUNCTION(mx_vario),		// sub menu function
+	FUNCTION(display_vario),	// display function
+	FUNCTION(update_time),		// refresh display data once every second
+	&menu_L2_Stopwatch,
+};
+#endif
 
 // Line2 - Stopwatch
 const struct menu menu_L2_Stopwatch = {

@@ -50,6 +50,10 @@
 
 // logic
 #include "user.h"
+#ifdef CONFIG_VARIO
+# include "vario.h"
+#endif
+
 
 // *************************************************************************************************
 // Prototypes section
@@ -118,6 +122,7 @@ void reset_altitude_measurement(void)
     }
 }
 
+#ifndef CONFIG_METRIC_ONLY
 // *************************************************************************************************
 // @fn          conv_m_to_ft
 // @brief       Convert meters to feet
@@ -140,6 +145,7 @@ s16 convert_ft_to_m(s16 ft)
     return (((s32) ft * 61) / 200);
 }
 
+#endif
 // *************************************************************************************************
 // @fn          is_altitude_measurement
 // @brief       Altitude measurement check
@@ -250,6 +256,12 @@ void do_altitude_measurement(u8 filter)
 	sAlt.altitude = conv_pa_to_altitude(sAlt.pressure, sAlt.temperature);
 #else
     sAlt.altitude = conv_pa_to_meter(sAlt.pressure, sAlt.temperature);
+#endif
+
+#ifdef CONFIG_VARIO
+   // Stash a copy to the vario after filtering. If doing so before, there
+   // is just too much unnecessary fluctuation, up to +/- 7Pa seen.
+   vario_p_write( pressure );
 #endif
 }
 
@@ -438,7 +450,7 @@ void display_altitude(u8 line, u8 update)
                 if (ft >= 0)
                 {
 #ifdef CONFIG_ALTI_ACCUMULATOR
-					str = int_to_array(ft, 4, 3);
+                    str = int_to_array(ft, 4, 3);
 #else
                     str = int_to_array(ft, 5, 4);
 #endif
@@ -448,9 +460,9 @@ void display_altitude(u8 line, u8 update)
                 else
                 {
 #ifdef CONFIG_ALTI_ACCUMULATOR
-					str = int_to_array(ft*(-1), 4, 3);
+                    str = int_to_array(ft*(-1), 4, 3);
 #else
-		            str = int_to_array(ft * (-1), 5, 4);
+                    str = int_to_array(ft * (-1), 5, 4);
 #endif
                     display_symbol(LCD_SYMB_ARROW_UP, SEG_OFF);
                     display_symbol(LCD_SYMB_ARROW_DOWN, SEG_ON);

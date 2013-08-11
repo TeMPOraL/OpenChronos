@@ -22,7 +22,7 @@ needing ridiculous preprocessor commands, e.g.
 
 == Requirements ==
 
-msp430-gcc4 http://mspgcc4.sourceforge.net/
+mspgcc  http://sourceforge.net/projects/mspgcc/ 
 make
 python http://python.org
 

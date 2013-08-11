@@ -257,9 +257,15 @@ void lcd_init(void)
     LCDBMEMCTL |= LCDCLRBM + LCDCLRM;
 
     // LCD_FREQ = ACLK/16/8 = 256Hz
+    // LCD_FREQ = ACLK/12/8 = 341.3Hz flickers in the sun
+    // LCD_FREQ = ACLK/10/8 = 409.6Hz still flickers in the sun when watch is moving (might be negligible)
+    // LCD_FREQ = ACLK/8/8 = 512Hz no flickering, even when watch is moving
+#ifdef CONFIG_FAST_LCD_REFRESH
     // Frame frequency = 256Hz/4 = 64Hz, LCD mux 4, LCD on
     LCDBCTL0 = (LCDDIV0 + LCDDIV1 + LCDDIV2 + LCDDIV3) | (LCDPRE0 + LCDPRE1) | LCD4MUX | LCDON;
-
+#else
+    LCDBCTL0 = (LCDDIV3) | (LCDPRE0 + LCDPRE1) | LCD4MUX | LCDON;
+#endif
     // LCB_BLK_FREQ = ACLK/8/4096 = 1Hz
     LCDBBLKCTL = LCDBLKPRE0 | LCDBLKPRE1 | LCDBLKDIV0 | LCDBLKDIV1 | LCDBLKDIV2 | LCDBLKMOD0;
 

@@ -15,6 +15,7 @@
 // DEBUG is not set
 #define CONFIG_DAY_OF_WEEK
 #define CONFIG_TEST
+#define CONFIG_FAST_LCD_REFRESH
 // CONFIG_BLUEROBIN is not set
 
 #endif // _CONFIG_H_

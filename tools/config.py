@@ -104,6 +104,14 @@ DATA["CONFIG_TEST"] = {
         "help": "Test module to test some functionalities when the clock started",
 }
 
+DATA["CONFIG_FAST_LCD_REFRESH"] = {
+        "name": "Fast LCD refreshing frequency",
+        "depends": [],
+        "default": True,
+        "help": "Select fast refresh of LCD",
+}
+
+
 DATA["TEXT_MODULES"] = {
         "name": "Modules",
         "type": "info"

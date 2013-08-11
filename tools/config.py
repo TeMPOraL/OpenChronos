@@ -152,10 +152,12 @@ DATA["CONFIG_ALTITUDE"] = {
         }
 
 
-#DATA["CONFIG_VARIO"] = {
-#        "name": "Combined with alti, gives vertical speed (478 bytes)",
-#        "depends": [],
-#        "default": False}
+DATA["CONFIG_VARIO"] = {
+        "name": "Combined with alti, gives vertical speed (478 bytes)",
+        "depends": [],
+	"isLinked": True,
+	"filenames": "logic/vario.c",
+        "default": False}
 
 DATA["CONFIG_ALTI_ACCUMULATOR"] = {
 	"name": "Altitude accumulator (1068 bytes)",

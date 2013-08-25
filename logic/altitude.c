@@ -54,6 +54,10 @@
 # include "vario.h"
 #endif
 
+#ifdef CONFIG_DATALOGGER
+#include "datalog.h"
+#endif
+
 
 // *************************************************************************************************
 // Prototypes section
@@ -202,6 +206,12 @@ void stop_altitude_measurement(void)
     // Return if pressure sensor was not initialised properly
     if (!ps_ok)
         return;
+
+#ifdef CONFIG_DATALOGGER
+    // Logging data?
+    if (is_datalog())
+        return;
+#endif
 
     // Stop pressure sensor
     ps_stop();

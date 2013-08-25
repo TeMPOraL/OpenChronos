@@ -47,6 +47,9 @@
 #include "ports.h"
 #include "timer.h"
 #include "radio.h"
+#ifdef CONFIG_DATALOGGER
+#include "flash.h"
+#endif
 
 // logic
 #include "acceleration.h"
@@ -59,7 +62,9 @@
 #include "temperature.h"
 #include "vti_ps.h"
 #include "altitude.h"
-
+#ifdef CONFIG_DATALOGGER
+#include "datalog.h"
+#endif
 // *************************************************************************************************
 // Prototypes section
 void simpliciti_get_data_callback(void);
@@ -104,7 +109,10 @@ u16 burst_packet[BM_SYNC_BURST_PACKETS_IN_DATA];
 
 // Current packet index
 u8 burst_packet_index;
-
+#ifdef CONFIG_DATALOGGER
+// Byte-Pointer to flash memory
+u8 *flash_ptr;
+#endif
 // *************************************************************************************************
 // Extern section
 extern void (*fptr_lcd_function_line1)(u8 line, u8 update);
@@ -460,6 +468,10 @@ void start_simpliciti_sync(void)
     // Get updated temperature
     temperature_measurement(FILTER_OFF);
 
+#ifdef CONFIG_DATALOGGER
+    // Stop data logging and close session
+    stop_datalog();
+#endif
     // Turn on beeper icon to show activity
     display_symbol(LCD_ICON_BEEPER1, SEG_ON_BLINK_ON);
     display_symbol(LCD_ICON_BEEPER2, SEG_ON_BLINK_ON);
@@ -552,6 +564,13 @@ void simpliciti_sync_decode_ap_cmd_callback(void)
             sAlt.altitude = (s16) ((simpliciti_data[12] << 8) + simpliciti_data[13]);
             update_pressure_table(sAlt.altitude, sAlt.pressure, sAlt.temperature);
 #endif
+#ifdef CONFIG_DATALOGGER
+            // Data logging mode
+            sDatalog.mode = simpliciti_data[14];
+            // Data logging interval
+            sDatalog.interval = simpliciti_data[15];
+
+#endif
             display_chars(LCD_SEG_L2_5_0, (u8 *) "  DONE", SEG_ON);
             sRFsmpl.display_sync_done = 1;
             break;
@@ -565,7 +584,11 @@ void simpliciti_sync_decode_ap_cmd_callback(void)
             // Set burst mode
             burst_mode = 1;
             // Number of packets to send
-            simpliciti_reply_count = burst_end - burst_start;
+#ifdef CONFIG_DATALOGGER
+            simpliciti_reply_count = burst_end - burst_start + 1;
+#else
+	    simpliciti_reply_count = burst_end - burst_start;
+#endif
             break;
 
         case SYNC_AP_CMD_GET_MEMORY_BLOCKS_MODE_2:
@@ -583,6 +606,14 @@ void simpliciti_sync_decode_ap_cmd_callback(void)
             break;
 
         case SYNC_AP_CMD_ERASE_MEMORY: // Erase data logger memory
+#ifdef CONFIG_DATALOGGER
+            for (i = DATALOG_PAGE_START; i <= DATALOG_PAGE_END; i++)
+            {
+                flash_erase_page(i);
+            }
+            sDatalog.wptr = (u16 *) DATALOG_MEMORY_START;
+            sDatalog.flags.flag.memory_full = 0;
+#endif
             break;
 
         case SYNC_AP_CMD_EXIT:         // Exit sync mode
@@ -601,7 +632,14 @@ void simpliciti_sync_decode_ap_cmd_callback(void)
 void simpliciti_sync_get_data_callback(unsigned int index)
 {
     u8 i;
+#ifdef CONFIG_DATALOGGER
+    u16 bytes_ready;
 
+    volatile u16 addr, mem;
+
+    // Calculate bytes ready for sync
+    bytes_ready = (sDatalog.wptr - (u16 *) DATALOG_MEMORY_START) * 2;
+#endif
     // simpliciti_data[0] contains data type and needs to be returned to AP
     switch (simpliciti_data[0])
     {
@@ -624,6 +662,17 @@ void simpliciti_sync_get_data_callback(unsigned int index)
 	    simpliciti_data[12] = 0;
             simpliciti_data[13] = 0xFF;
 #endif
+#ifdef CONFIG_DATALOGGER
+           // Data logging mode
+            simpliciti_data[14] = sDatalog.mode;
+            // Data logging interval
+            simpliciti_data[15] = sDatalog.interval;
+            // Bytes ready for download
+            simpliciti_data[16] = bytes_ready >> 8;
+            simpliciti_data[17] = bytes_ready & 0xFF;
+            // Unused
+            simpliciti_data[18] = 0;
+#endif
             break;
 
         case SYNC_ED_TYPE_MEMORY:
@@ -633,8 +682,15 @@ void simpliciti_sync_get_data_callback(unsigned int index)
                 simpliciti_data[1] = ((burst_start + index) >> 8) & 0xFF;
                 simpliciti_data[2] = (burst_start + index) & 0xFF;
                 // Assemble payload
+#ifdef CONFIG_DATALOGGER
+                flash_ptr = (u8 *) (DATALOG_MEMORY_START + (burst_start + index) * 16);
+#endif
                 for (i = 3; i < BM_SYNC_DATA_LENGTH; i++)
+#ifdef CONFIG_DATALOGGER
+					simpliciti_data[i] = *flash_ptr++;
+#else
                     simpliciti_data[i] = index;
+#endif
             }
             else if (burst_mode == 2)
             {
@@ -642,8 +698,15 @@ void simpliciti_sync_get_data_callback(unsigned int index)
                 simpliciti_data[1] = (burst_packet[index] >> 8) & 0xFF;
                 simpliciti_data[2] = burst_packet[index] & 0xFF;
                 // Assemble payload
+#ifdef CONFIG_DATALOGGER
+                flash_ptr = (u8 *) (DATALOG_MEMORY_START + burst_packet[index] * 16);
+#endif
                 for (i = 3; i < BM_SYNC_DATA_LENGTH; i++)
+#ifdef CONFIG_DATALOGGER
+					simpliciti_data[i] = *flash_ptr++;
+#else
                     simpliciti_data[i] = index;
+#endif
             }
             break;
     }

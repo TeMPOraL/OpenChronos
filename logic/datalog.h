@@ -33,8 +33,8 @@
 //
 // *************************************************************************************************
 
-#ifndef MENU_H_
-#define MENU_H_
+#ifndef DATALOG_H_
+#define DATALOG_H_
 
 // *************************************************************************************************
 // Include section
@@ -42,56 +42,93 @@
 // *************************************************************************************************
 // Prototypes section
 
+// internal functions
+extern void reset_datalog(void);
+extern u8 is_datalog(void);
+extern void do_datalog(void);
+extern void display_datalog(u8 line, u8 update);
+extern void stop_datalog(void);
+
+// menu functions
+extern void sx_datalog(u8 line);
+
 // *************************************************************************************************
 // Defines section
 
-struct menu
-{
-    // Pointer to direct function (start, stop etc)
-    void (*sx_function)(u8 line);
-    // Pointer to sub menu function (change settings, reset counter etc)
-    void (*mx_function)(u8 line);
-    // Pointer to display function
-    void (*display_function)(u8 line, u8 mode);
-    // Display update trigger
-    u8 (*display_update)(void);
-    // Pointer to next menu item
-    const struct menu *next;
-};
+// Data logger state
+#define DATALOG_OFF                                             (0u)
+#define DATALOG_ON                                              (1u)
+
+// Data memory range: 0x8000 - 0x9DFF (7.5kB)
+#define DATALOG_MEMORY_START            (0xF000)
+#define DATALOG_MEMORY_END              (0xFDFF)
+#define DATALOG_BYTES_PER_PAGE          (512u)
+#define DATALOG_PAGE_START                              (DATALOG_MEMORY_START / \
+                                                         DATALOG_BYTES_PER_PAGE)
+#define DATALOG_PAGE_END                                (DATALOG_MEMORY_END / \
+                                                         DATALOG_BYTES_PER_PAGE)
+
+// Store data in buffer before writing to flash memory
+#define DATALOG_BUFFER_SIZE             (128u)
+#define DATALOG_BUFFER_WRITE_THRESHOLD  (100u)
+
+// Datalogging interval in seconds
+#define DATALOG_INTERVAL                        (5u)
+
+// Datalogger state machine commands
+#define DATALOG_CMD_START                       (BIT0)
+#define DATALOG_CMD_CLOSE                       (BIT1)
+#define DATALOG_CMD_ERASE                       (BIT2)
+#define DATALOG_CMD_ADD_DATA                    (BIT3)
+#define DATALOG_CMD_WRITE_DATA                  (BIT4)
+
+// Datalog modes
+#define DATALOG_MODE_HEARTRATE                  (BIT0)
+#define DATALOG_MODE_TEMPERATURE                (BIT1)
+#define DATALOG_MODE_ALTITUDE                   (BIT2)
+#define DATALOG_MODE_ACCELERATION               (BIT3)
 
 // *************************************************************************************************
 // Global Variable section
 
+// Flags
+typedef union
+{
+    struct
+    {
+        u8 on          : 1; // 1 = data logging has started
+        u8 memory_full : 1; // 1 = memory is full
+        u8 one_second  : 1; // 1 = 1 second has elapsed
+    } flag;
+    u8 all;                 // Shortcut to all flags (for reset)
+} datalog_flags;
+
+struct datalog
+{
+    // Flags
+    datalog_flags flags;
+
+    // Data logging mode
+    u8 mode;
+
+    // Data logging interval
+    u8 interval;
+
+    // Data logging delay counter
+    u8 delay;
+
+    // Datalog memory write pointer
+    u16 *wptr;
+
+    // Datalogger write buffer index
+    u8 idx;
+
+    // Datalogger write buffer
+    u8 buffer[DATALOG_BUFFER_SIZE];
+};
+extern struct datalog sDatalog;
+
 // *************************************************************************************************
 // Extern section
 
-// Line1 navigation
-extern const struct menu menu_L1_Time;
-extern const struct menu menu_L1_Alarm;
-extern const struct menu menu_L1_Altitude;
-extern const struct menu menu_L1_AltAccum;
-extern const struct menu menu_L1_Temperature;
-extern const struct menu menu_L1_Altitude;
-extern const struct menu menu_L1_Heartrate;
-extern const struct menu menu_L1_Speed;
-extern const struct menu menu_L1_Acceleration;
-
-// Line2 navigation
-extern const struct menu menu_L2_Date;
-extern const struct menu menu_L2_Vario;
-extern const struct menu menu_L2_Stopwatch;
-extern const struct menu menu_L2_Battery;
-#ifdef CONFIG_DATALOGGER
-extern const struct menu menu_L2_DataLog;
-#endif
-extern const struct menu menu_L2_Rf;
-extern const struct menu menu_L2_Ppt;
-extern const struct menu menu_L2_Sync;
-extern const struct menu menu_L2_CalDist;
-extern const struct menu menu_L2_RFBSL;
-
-// Pointers to current menu item
-extern const struct menu *ptrMenu_L1;
-extern const struct menu *ptrMenu_L2;
-
-#endif                          /*MENU_H_ */
+#endif                          /*DATALOG_H_ */

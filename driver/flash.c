@@ -32,12 +32,17 @@
 //        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 // *************************************************************************************************
-
-#ifndef MENU_H_
-#define MENU_H_
+// Data logger routines.
+// *************************************************************************************************
 
 // *************************************************************************************************
 // Include section
+
+// system
+#include "project.h"
+
+// logic
+#include "datalog.h"
 
 // *************************************************************************************************
 // Prototypes section
@@ -45,53 +50,46 @@
 // *************************************************************************************************
 // Defines section
 
-struct menu
+// *************************************************************************************************
+// Implementation
+
+void flash_erase_page(u8 page)
 {
-    // Pointer to direct function (start, stop etc)
-    void (*sx_function)(u8 line);
-    // Pointer to sub menu function (change settings, reset counter etc)
-    void (*mx_function)(u8 line);
-    // Pointer to display function
-    void (*display_function)(u8 line, u8 mode);
-    // Display update trigger
-    u8 (*display_update)(void);
-    // Pointer to next menu item
-    const struct menu *next;
-};
+    // Convert page index to memory address
+    u16 *wptr = (u16 *) (page * 512);
 
-// *************************************************************************************************
-// Global Variable section
+    // Range check
+    if ((page < DATALOG_PAGE_START) || (page > DATALOG_PAGE_END))
+        return;
 
-// *************************************************************************************************
-// Extern section
+    // Wait until not busy
+    while ((FCTL3 & BUSY) != 0) ;
 
-// Line1 navigation
-extern const struct menu menu_L1_Time;
-extern const struct menu menu_L1_Alarm;
-extern const struct menu menu_L1_Altitude;
-extern const struct menu menu_L1_AltAccum;
-extern const struct menu menu_L1_Temperature;
-extern const struct menu menu_L1_Altitude;
-extern const struct menu menu_L1_Heartrate;
-extern const struct menu menu_L1_Speed;
-extern const struct menu menu_L1_Acceleration;
+    __disable_interrupt();
+    FCTL3 = FWKEY;              // Clear Lock bit
+    FCTL1 = FWKEY + ERASE;      // Set Erase bit
+    *wptr = 0;                  // Dummy write to erase Flash seg
+    FCTL1 = FWKEY + WRT;        // Set WRT bit for write operation
+    FCTL1 = FWKEY;              // Clear WRT bit
+    FCTL3 = FWKEY + LOCK;       // Set LOCK bit
+    __enable_interrupt();
+}
 
-// Line2 navigation
-extern const struct menu menu_L2_Date;
-extern const struct menu menu_L2_Vario;
-extern const struct menu menu_L2_Stopwatch;
-extern const struct menu menu_L2_Battery;
-#ifdef CONFIG_DATALOGGER
-extern const struct menu menu_L2_DataLog;
-#endif
-extern const struct menu menu_L2_Rf;
-extern const struct menu menu_L2_Ppt;
-extern const struct menu menu_L2_Sync;
-extern const struct menu menu_L2_CalDist;
-extern const struct menu menu_L2_RFBSL;
+void flash_write(u16 * wptr, u16 data)
+{
+    // Range check
+    //if ((page < DATALOG_MEMORY_START) || (page > DATALOG_MEMORY_END)) return;
 
-// Pointers to current menu item
-extern const struct menu *ptrMenu_L1;
-extern const struct menu *ptrMenu_L2;
+    // Wait until not busy
+    while ((FCTL3 & BUSY) != 0) ;
 
-#endif                          /*MENU_H_ */
+    __disable_interrupt();
+    FCTL3 = FWKEY;              // Clear Lock bit
+    *wptr = 0;                  // Dummy write to erase Flash seg
+    FCTL1 = FWKEY + WRT;        // Set WRT bit for write operation
+    *wptr = data;
+    FCTL1 = FWKEY;              // Clear WRT bit
+    FCTL3 = FWKEY + LOCK;       // Set LOCK bit
+    __enable_interrupt();
+}
+

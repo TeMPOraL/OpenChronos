@@ -104,6 +104,9 @@
 #include "bluerobin.h"
 #include "rfsimpliciti.h"
 #include "simpliciti.h"
+#ifdef CONFIG_DATALOGGER
+#include "datalog.h"
+#endif
 #include "rfbsl.h"
 #include "test.h"
 
@@ -402,6 +405,11 @@ void init_global_variables(void)
     // Reset battery measurement
     reset_batt_measurement();
     battery_measurement();
+
+#ifdef CONFIG_DATALOGGER
+    // Reset data logger
+    reset_datalog();
+#endif
 }
 
 // *************************************************************************************************
@@ -566,7 +574,11 @@ void process_requests(void)
     // Do acceleration measurement
     if (request.flag.acceleration_measurement)
         do_acceleration_measurement();
-
+#ifdef CONFIG_DATALOGGER
+    // Add data to datalog buffer
+    if (request.flag.datalog)
+        do_datalog();
+#endif
     // Do voltage measurement
     if (request.flag.voltage_measurement)
         battery_measurement();

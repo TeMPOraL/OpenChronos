@@ -61,6 +61,9 @@
 #include "acceleration.h"
 #include "bluerobin.h"
 #include "temperature.h"
+#ifdef CONFIG_DATALOGGER
+#include "datalog.h"
+#endif
 
 // *************************************************************************************************
 // Prototypes section
@@ -316,7 +319,11 @@ __interrupt void TIMER0_A0_ISR(void)
 
     // -------------------------------------------------------------------
     // Service active modules that require 1/s processing
-
+#ifdef CONFIG_DATALOGGER
+   // Request data logging
+    if (is_datalog())
+        request.flag.datalog = 1;
+#endif
     // Generate alarm signal
     if (sAlarm.state == ALARM_ON)
     {

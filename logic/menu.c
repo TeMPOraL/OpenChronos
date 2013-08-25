@@ -57,6 +57,9 @@
 #include "bluerobin.h"
 #include "rfsimpliciti.h"
 #include "acceleration.h"
+#ifdef CONFIG_DATALOGGER
+#include "datalog.h"
+#endif
 #include "rfbsl.h"
 #ifdef CONFIG_VARIO
 #include "vario.h"
@@ -254,8 +257,23 @@ const struct menu menu_L2_Battery = {
     FUNCTION(dummy),                  // sub menu function
     FUNCTION(display_battery_V),      // display function
     FUNCTION(update_battery_voltage), // new display data
+#ifdef CONFIG_DATALOGGER
+	&menu_L2_DataLog
+#else
+    &menu_L2_Rf,
+#endif
+};
+
+#ifdef CONFIG_DATALOGGER
+// Line2 - DataLog (data recording on/off)
+const struct menu menu_L2_DataLog = {
+    FUNCTION(sx_datalog),          // direct function
+    FUNCTION(dummy),               // sub menu function
+    FUNCTION(display_datalog),     // display function
+    FUNCTION(update_time),         // new display data
     &menu_L2_Rf,
 };
+#endif
 
 // Line2 - ACC (acceleration data + button events via SimpliciTI)
 const struct menu menu_L2_Rf = {

@@ -148,7 +148,7 @@ DATA["CONFIG_ALTITUDE"] = {
         "default": True,
 	"isLinked": True,
 	"filenames":"logic/altitude.c",
-        "help": "Messures altitude"
+        "help": "Meassures altitude"
         }
 
 
@@ -165,6 +165,18 @@ DATA["CONFIG_ALTI_ACCUMULATOR"] = {
 	"default": False,
 	"help": "If active take altitude measurement once per minute and accumulate all ascending vertical meters."
 	}
+
+DATA["CONFIG_DATALOGGER"] = {
+        "name": "Logger (1084 bytes)",
+        "depends": [],
+        "default": True,
+	"isLinked": True,
+	"filenames":"driver/flash.c logic/datalog.c",
+	"isCompileParams": True,
+	"CompileParams": "-T ldscript/msp430_datalog.x",
+	"help": "Data logger. Need free space by addresses:  0xf000-0xff80"
+        }
+
 
 #DATA["CONFIG_PROUT"] = {
 #        "name": "Simple example that displays a text (238 bytes)",
@@ -460,6 +472,13 @@ class OpenChronosApp(object):
 		        fpmk.write("%s_FN = %s\n" %(key, filename))
 		    else:
 			fpmk.write("%s_FN = \n" %key)
+		if DATA[key].get("isCompileParams", False):
+                    filename = DATA[key].get("CompileParams")
+		    if dat["value"]:
+		        fpmk.write("%s_CFLAGS = %s\n" %(key, filename))
+		    else:
+			fpmk.write("%s_CFLAGS = \n" %key)
+
             else:
                 fp.write("#define %s %s\n" %(key, dat["value"]))
             if DATA[key].get("ifndef", False):

@@ -10,10 +10,16 @@ include config.mk
 
 PROJ_DIR	=.
 BUILD_DIR = build
-CFLAGS_PRODUCTION = -Os -Wall#-Wl,--gc-sections # -ffunction-sections # -fdata-sections  -fno-inline-functions# -O optimizes
+CFLAGS_PRODUCTION = -Os -Wall 
+#-Wl,--section-start -Wl,.datalogsection=0xa400 #-T msp430.x
+#-Wl,--gc-sections # -ffunction-sections # -fdata-sections  -fno-inline-functions# -O optimizes 
+
+#Add feature specific flags
+CFLAGS_PRODUCTION += $(CONFIG_DATALOGGER_CFLAGS)
+
 # more optimizion flags
 CFLAGS_PRODUCTION +=  -fomit-frame-pointer -fno-force-addr -finline-limit=1 -fno-schedule-insns 
-CFLAGS_PRODUCTION += -Wl,-Map=output.map
+CFLAGS_PRODUCTION += -Wl,-Map=build/eZChronos.map
 CFLAGS_DEBUG= -g -Os # -g enables debugging symbol table, -O0 for NO optimization
 
 CC_CMACH	= -mmcu=cc430f6137
@@ -37,7 +43,7 @@ SIMPLICICTI_SOURCE = $(SIMPLICICTI_SOURCE_ODD) simpliciti/Components/bsp/bsp.c s
 
 SIMPLICICTI_O = $(addsuffix .o,$(basename $(SIMPLICICTI_SOURCE)))
 
-FEATURES_SOURCE = $(CONFIG_BLUEROBIN_FN) $(CONFIG_ALTITUDE_FN) $(CONFIG_VARIO_FN)  
+FEATURES_SOURCE = $(CONFIG_BLUEROBIN_FN) $(CONFIG_ALTITUDE_FN) $(CONFIG_VARIO_FN) $(CONFIG_DATALOGGER_FN) 
 
 FEATURES_O = $(addsuffix .o,$(basename $(FEATURES_SOURCE)))
 

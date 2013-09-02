@@ -950,7 +950,7 @@ proc sync_decode_data {} {
   lappend hex_arr 0x00
   lappend hex_arr 0x00
   lappend hex_arr 0x00
-
+puts $hex_arr
   # Decode data (format is lo-hi) and write to file
   set session 0  
   for { set i 0 } { $i < [expr [llength $hex_arr] - 2] } {incr i } {
@@ -962,7 +962,7 @@ proc sync_decode_data {} {
     } else {
       set next_word [expr ([lindex $hex_arr [expr $i+1]]<<8) | [lindex $hex_arr $i]]
     }
-
+puts "Next word = $next_word"
     # Check for start marker
     if { $session == 0 } {
 
@@ -1008,9 +1008,9 @@ proc sync_decode_data {} {
       set rec_accel_X 0
       set rec_accel_Y 0
       set rec_accel_Z 0
-
+puts "$i: $byte0 $byte1 $byte2 $byte3 $rec_mode [expr $rec_mode & 7]"
       # Decode data
-      switch $rec_mode {
+      switch [format "0x%02X" [expr $rec_mode & 7]] {
         0x01 { # HR
             set rec_hr      [format %d $byte0]
           }
@@ -1048,6 +1048,7 @@ proc sync_decode_data {} {
             set rec_alt     [format %d [expr (($byte1&0x0F)<<8) | $byte2]]
             # Move to next data set        
             set i [expr $i+3-1]
+	    puts "Temp+Alt: $byte0 $byte1 $byte2 $i"
           }
         }
         # Convert metric temperature and altitude to Imperial units 
@@ -1060,17 +1061,32 @@ proc sync_decode_data {} {
 		incr i
 		set byte0     [lindex $hex_arr $i]
                 set byte1     [lindex $hex_arr [expr $i+1]]
-		set rec_accel_X [format %2.3f [expr [format %2.3f [expr (($byte0<<8) | ($byte1))]]/100]]
+		puts "X: $byte0 $byte1"
+		if {[expr $byte0 & 0x80] != 0} {
+			set rec_accel_X [format %2.3f [expr -[format %2.3f [expr (($byte0<<8) | ($byte1))^0xFFFF ]]/100]]
+		} else {
+			set rec_accel_X [format %2.3f [expr [format %2.3f [expr (($byte0<<8) | ($byte1))]]/100]]
+		}
                 # Move to next data set        
                 set i [expr $i+2]
 		set byte0     [lindex $hex_arr $i]
                 set byte1     [lindex $hex_arr [expr $i+1]]
-		set rec_accel_Y [format %2.3f [expr [format %2.3f [expr (($byte0<<8) | ($byte1))]]/100]]
+		puts "Y: $byte0 $byte1"
+		if {[expr $byte0 & 0x80] != 0} {
+			set rec_accel_Y [format %2.3f [expr -[format %2.3f [expr (($byte0<<8) | ($byte1))^0xFFFF ]]/100]]
+		} else {
+			set rec_accel_Y [format %2.3f [expr [format %2.3f [expr (($byte0<<8) | ($byte1))]]/100]]
+		}
                 # Move to next data set        
                 set i [expr $i+2]
 		set byte0     [lindex $hex_arr $i]
                 set byte1     [lindex $hex_arr [expr $i+1]]
-		set rec_accel_Z [format %2.3f [expr [format %2.3f [expr (($byte0<<8) | ($byte1))]]/100]]
+		puts "Z: $byte0 $byte1"
+		if {[expr $byte0 & 0x80] != 0} {
+			set rec_accel_Z [format %2.3f [expr -[format %2.3f [expr (($byte0<<8) | ($byte1))^0xFFFF ]]/100]]
+		} else {
+			set rec_accel_Z [format %2.3f [expr [format %2.3f [expr (($byte0<<8) | ($byte1))]]/100]]
+		}
                 # Move to next data set        
                 set i [expr $i+2-1]
 	} 

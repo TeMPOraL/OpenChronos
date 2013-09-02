@@ -48,6 +48,7 @@ extern u8 is_datalog(void);
 extern void do_datalog(void);
 extern void display_datalog(u8 line, u8 update);
 extern void stop_datalog(void);
+extern void datalog_add_acceleration(s16 x, s16 y, s16 z);
 
 // menu functions
 extern void sx_datalog(u8 line);

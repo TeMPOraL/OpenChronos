@@ -53,6 +53,7 @@
 #include "altitude.h"
 #include "temperature.h"
 #include "bluerobin.h"
+#include "acceleration.h"
 
 // *************************************************************************************************
 // Prototypes section
@@ -66,7 +67,15 @@ void datalog_sm(u8 * data, u8 len, u8 cmd);
 // *************************************************************************************************
 // Global Variable section
 struct datalog sDatalog;
- __attribute__((section(".datalog"))) unsigned char datalogbuffer[DATALOG_MEMORY_END - DATALOG_MEMORY_START];
+__attribute__((section(".datalog"))) unsigned char datalogbuffer[DATALOG_MEMORY_END - DATALOG_MEMORY_START];
+
+struct datalogAccelAccum
+{
+	s16 x;
+	s16 y;
+	s16 z;
+};
+struct datalogAccelAccum sDatalogAccelAccum;
 
 // *************************************************************************************************
 // Extern section
@@ -155,12 +164,18 @@ void start_datalog(void)
 #endif
 #ifdef CONFIG_ALTITUDE
     // Start pressure measurement
-    if ((sDatalog.mode & (DATALOG_MODE_TEMPERATURE | DATALOG_MODE_ALTITUDE)) != 0)
+    if ((sDatalog.mode & DATALOG_MODE_ALTITUDE) != 0)
     {
         // Start altitude measurement
         start_altitude_measurement();
     }
 #endif
+    if ((sDatalog.mode & DATALOG_MODE_ACCELERATION) != 0)
+    {
+        // Start altitude measurement
+        start_acceleration_measurement();
+    }
+
     // Set datalogger icon
     display_symbol(LCD_ICON_RECORD, SEG_ON_BLINK_OFF);
 
@@ -188,12 +203,19 @@ void stop_datalog(void)
     datalog_sm(NULL, 0, DATALOG_CMD_CLOSE);
 
 #ifdef CONFIG_ALTITUDE
-    if ((sDatalog.mode & (DATALOG_MODE_TEMPERATURE | DATALOG_MODE_ALTITUDE)) != 0)
+    if ((sDatalog.mode & DATALOG_MODE_ALTITUDE) != 0)
     {
         // Stop altitude measurement
         stop_altitude_measurement();
     }
 #endif
+    if ((sDatalog.mode & DATALOG_MODE_ACCELERATION) != 0)
+    {
+        // Stop altitude measurement
+        stop_acceleration_measurement();
+    }
+
+
     // Clear datalogger icon
     display_symbol(LCD_ICON_RECORD, SEG_OFF_BLINK_OFF);
 }
@@ -226,8 +248,8 @@ void display_datalog(u8 line, u8 update)
 // *************************************************************************************************
 void do_datalog(void)
 {
-    u8 temp[4];
-    u8 count;
+    u8 temp[10];
+    u8 count = 0;
 
     // If logging delay is over, add new data
     if (--sDatalog.delay == 0)
@@ -235,14 +257,14 @@ void do_datalog(void)
         // Store data when possible compressed (heartrate = 8 bits, temperature/altitude = min. 12
         // bits)
 #ifdef CONFIG_BLUEROBIN
-        if (sDatalog.mode == DATALOG_MODE_HEARTRATE)
+        if ((sDatalog.mode & 7) == DATALOG_MODE_HEARTRATE)
         {
             temp[0] = sBlueRobin.heartrate;
             count = 1;
         }
         else 
 #endif
-	if (sDatalog.mode == DATALOG_MODE_TEMPERATURE)
+	if ((sDatalog.mode & 7) == DATALOG_MODE_TEMPERATURE)
         {
             temp[0] = (sTemp.degrees >> 8) & 0xFF;
             temp[1] = sTemp.degrees & 0xFF;
@@ -250,7 +272,7 @@ void do_datalog(void)
         }
         else 
 #ifdef CONFIG_ALTITUDE
-	if (sDatalog.mode == DATALOG_MODE_ALTITUDE)
+	if ((sDatalog.mode & 7) == DATALOG_MODE_ALTITUDE)
         {
             temp[0] = (sAlt.altitude >> 8) & 0xFF;
             temp[1] = sAlt.altitude & 0xFF;
@@ -259,7 +281,7 @@ void do_datalog(void)
         else 
 #endif
 #ifdef CONFIG_BLUEROBIN
-	if (sDatalog.mode ==
+	if ((sDatalog.mode & 7) ==
                  (DATALOG_MODE_HEARTRATE | DATALOG_MODE_TEMPERATURE | DATALOG_MODE_ALTITUDE))
         {
             temp[0] = sBlueRobin.heartrate;
@@ -268,14 +290,14 @@ void do_datalog(void)
             temp[3] = sAlt.altitude & 0xFF;
             count = 4;
         }
-        else if (sDatalog.mode == (DATALOG_MODE_HEARTRATE | DATALOG_MODE_TEMPERATURE))
+        else if ((sDatalog.mode & 7) == (DATALOG_MODE_HEARTRATE | DATALOG_MODE_TEMPERATURE))
         {
             temp[0] = sBlueRobin.heartrate;
             temp[1] = (sTemp.degrees >> 8) & 0xFF;
             temp[2] = sTemp.degrees & 0xFF;
             count = 3;
         }
-        else if (sDatalog.mode == (DATALOG_MODE_HEARTRATE | DATALOG_MODE_ALTITUDE))
+        else if ((sDatalog.mode & 7) == (DATALOG_MODE_HEARTRATE | DATALOG_MODE_ALTITUDE))
         {
             temp[0] = sBlueRobin.heartrate;
             temp[1] = (sAlt.altitude >> 8) & 0xFF;
@@ -285,7 +307,7 @@ void do_datalog(void)
         else 
 #endif
 #ifdef CONFIG_ALTITUDE
-	if (sDatalog.mode == (DATALOG_MODE_TEMPERATURE | DATALOG_MODE_ALTITUDE))
+	if ((sDatalog.mode & 7) == (DATALOG_MODE_TEMPERATURE | DATALOG_MODE_ALTITUDE))
         {
             temp[0] = (sTemp.degrees >> 4) & 0xFF;
             temp[1] = ((sTemp.degrees << 4) & 0xF0) | ((sAlt.altitude >> 8) & 0x0F);
@@ -298,6 +320,24 @@ void do_datalog(void)
 		temp[0] = 0;
 		count = 0;
 	}
+	
+	if ((sDatalog.mode & DATALOG_MODE_ACCELERATION) != 0)
+        {
+		s16 value;
+		value = sDatalogAccelAccum.x;
+                temp[count] = ((value >> 8) & 0xFF);
+                temp[count+1] = value & 0xFF;
+                count += 2;
+		value = sDatalogAccelAccum.y;
+                temp[count] = ((value >> 8) & 0xFF);
+                temp[count+1] = value & 0xFF;
+                count += 2;
+		value = sDatalogAccelAccum.z;
+                temp[count] = ((value >> 8) & 0x0F);
+                temp[count+1] = value & 0xFF;
+                count += 2;
+        }
+
         // Add data to recording buffer
         datalog_sm((u8 *) &temp, count, DATALOG_CMD_ADD_DATA);
 
@@ -487,3 +527,20 @@ void datalog_sm(u8 * data, u8 len, u8 cmd)
     }
 }
 
+// *************************************************************************************************
+// @fn          datalog_add_acceleration
+// @brief       Saving current value of acceleration 
+// @param       u8 line LINE1, LINE2
+//                              u8 update       DISPLAY_LINE_UPDATE_FULL, DISPLAY_LINE_CLEAR
+// @return      none
+// *************************************************************************************************
+
+void datalog_add_acceleration(s16 x, s16 y, s16 z)
+{
+	if ((sDatalog.mode & (DATALOG_MODE_ACCELERATION)) != 0)
+	{
+              sDatalogAccelAccum.x = (4*sDatalogAccelAccum.x + x) / 5;
+              sDatalogAccelAccum.y = (4*sDatalogAccelAccum.y + y) / 5;
+              sDatalogAccelAccum.z = (4*sDatalogAccelAccum.z + z) / 5;
+	}
+}

@@ -49,6 +49,9 @@
 #include "acceleration.h"
 #include "simpliciti.h"
 #include "user.h"
+#ifdef CONFIG_DATALOGGER
+#include "datalog.h"
+#endif
 
 // *************************************************************************************************
 // Global Variable section
@@ -156,11 +159,28 @@ u8 is_acceleration_measurement(void)
 // *************************************************************************************************
 void do_acceleration_measurement(void)
 {
+#ifdef CONFIG_DATALOGGER
+	s16 x,y,z;
+#endif
     // Get data from sensor
     as_get_data(sAccel.xyz);
 
-    // Set display update flag
-    display.flag.update_acceleration = 1;
+    if(sAccel.view_style != DISPLAY_ACCEL_NONE)
+    {
+          // Set display update flag
+          display.flag.update_acceleration = 1;
+    }
+#ifdef CONFIG_DATALOGGER
+    x = convert_acceleration_value_to_mgrav(sAccel.xyz[0]) / 10;
+    y = convert_acceleration_value_to_mgrav(sAccel.xyz[1]) / 10;
+    z = convert_acceleration_value_to_mgrav(sAccel.xyz[2]) / 10;
+
+    x = (acceleration_value_is_positive(sAccel.xyz[0])) ? x: -x;
+    y = (acceleration_value_is_positive(sAccel.xyz[1])) ? y: -y;
+    x = (acceleration_value_is_positive(sAccel.xyz[2])) ? z: -z;
+
+    datalog_add_acceleration(x, y, z);
+#endif
 }
 
 // *************************************************************************************************
@@ -190,18 +210,7 @@ void display_acceleration(u8 line, u8 update)
                 // Start acceleration sensor
                 if (!is_acceleration_measurement())
                 {
-                    // Clear previous acceleration value
-                    sAccel.data = 0;
-
-                    // Start sensor
-                    as_start();
-
-                    // Set timeout counter
-                    sAccel.timeout = ACCEL_MEASUREMENT_TIMEOUT;
-
-                    // Set mode
-                    sAccel.mode = ACCEL_MODE_ON;
-
+		    start_acceleration_measurement();
                     // Start with Y-axis values
                     sAccel.view_style = DISPLAY_ACCEL_Y;
                 }
@@ -232,7 +241,7 @@ void display_acceleration(u8 line, u8 update)
 
             // Filter acceleration
 #ifdef FIXEDPOINT
-			accel_data = (u16)(((accel_data * 2) + (sAccel.data * 8))/10);
+            accel_data = (u16)(((accel_data * 2) + (sAccel.data * 8))/10);
 #else
             accel_data = (u16) ((accel_data * 0.2) + (sAccel.data * 0.8));
 #endif
@@ -258,11 +267,7 @@ void display_acceleration(u8 line, u8 update)
         else if (update == DISPLAY_LINE_CLEAR)
         {
             // Stop acceleration sensor
-            as_stop();
-
-            // Clear mode
-            sAccel.mode = ACCEL_MODE_OFF;
-
+	    stop_acceleration_measurement();
             // Clean up display
             display_symbol(LCD_SEG_L1_DP1, SEG_OFF);
             display_symbol(LCD_SYMB_ARROW_UP, SEG_OFF);
@@ -271,3 +276,45 @@ void display_acceleration(u8 line, u8 update)
     }
 }
 
+// *************************************************************************************************
+// @fn          start_acceleration_meashurement
+// @brief       Reset acceleration variables.
+// @param       none
+// @return      none
+// *************************************************************************************************
+void start_acceleration_measurement(void)
+{
+         if(is_acceleration_measurement())
+		 return;
+         // Clear previous acceleration value
+         sAccel.data = 0;
+         // Start sensor
+         as_start();
+         // Set timeout counter
+         sAccel.timeout = ACCEL_MEASUREMENT_TIMEOUT;
+         // Set mode
+         sAccel.mode = ACCEL_MODE_ON;
+
+	 sAccel.view_style = DISPLAY_ACCEL_NONE;
+
+}
+
+// *************************************************************************************************
+// @fn          stot_acceleration_meashurement
+// @brief       Reset acceleration variables.
+// @param       none
+// @return      none
+// *************************************************************************************************
+
+void stop_acceleration_measurement(void)
+{
+#ifdef CONFIG_DATALOGGER
+	if (is_datalog())
+		return;
+#endif
+	// Stop sensor
+	as_stop();
+        // Clear mode
+        sAccel.mode = ACCEL_MODE_OFF;
+
+}

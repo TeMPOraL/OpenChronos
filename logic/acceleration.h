@@ -47,6 +47,7 @@
 #define DISPLAY_ACCEL_X         (0u)
 #define DISPLAY_ACCEL_Y         (1u)
 #define DISPLAY_ACCEL_Z         (2u)
+#define DISPLAY_ACCEL_NONE      (3u)
 
 #define ACCEL_MODE_OFF          (0u)
 #define ACCEL_MODE_ON           (1u)
@@ -73,5 +74,7 @@ extern void sx_acceleration(u8 line);
 extern void display_acceleration(u8 line, u8 update);
 extern u8 is_acceleration_measurement(void);
 extern void do_acceleration_measurement(void);
+extern void start_acceleration_measurement(void);
+extern void stop_acceleration_measurement(void);
 
 #endif                          /*ACCELERATION_H_ */

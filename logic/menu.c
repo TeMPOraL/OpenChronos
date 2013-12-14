@@ -58,6 +58,7 @@
 #include "rfsimpliciti.h"
 #include "acceleration.h"
 #include "makapaka.h"
+#include "lifesaver.h"
 #ifdef CONFIG_DATALOGGER
 #include "datalog.h"
 #endif
@@ -225,6 +226,15 @@ const struct menu menu_L1_Makapaka = {
     FUNCTION(sx_makapaka),        // direct function
     FUNCTION(dummy),                  // sub menu function
     FUNCTION(display_makapaka),   // display function
+    FUNCTION(update_time),    // new display data
+    &menu_L1_Lifesaver,
+};
+
+// Line1 - Lifesaver
+const struct menu menu_L1_Lifesaver = {
+    FUNCTION(sx_lifesaver),        // direct function
+    FUNCTION(dummy),                  // sub menu function
+    FUNCTION(display_lifesaver),   // display function
     FUNCTION(update_time),    // new display data
     &menu_L1_Temperature,
 };

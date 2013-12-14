@@ -76,6 +76,7 @@ extern const struct menu menu_L1_Heartrate;
 extern const struct menu menu_L1_Speed;
 extern const struct menu menu_L1_Acceleration;
 extern const struct menu menu_L1_Makapaka;
+extern const struct menu menu_L1_Lifesaver;
 
 // Line2 navigation
 extern const struct menu menu_L2_Date;

@@ -57,6 +57,7 @@
 #include "bluerobin.h"
 #include "rfsimpliciti.h"
 #include "acceleration.h"
+#include "makapaka.h"
 #ifdef CONFIG_DATALOGGER
 #include "datalog.h"
 #endif
@@ -138,7 +139,8 @@ const struct menu menu_L1_Alarm = {
     FUNCTION(mx_alarm),               // sub menu function
     FUNCTION(display_alarm),          // display function
     FUNCTION(update_alarm),           // new display data
-    &menu_L1_Temperature,
+//    &menu_L1_Temperature,
+    &menu_L1_Makapaka,
 };
 
 // Line1 - Temperature
@@ -217,6 +219,16 @@ const struct menu menu_L1_Acceleration = {
     FUNCTION(update_acceleration),    // new display data
     &menu_L1_Time,
 };
+
+// Line1 - Makapaka
+const struct menu menu_L1_Makapaka = {
+    FUNCTION(sx_makapaka),        // direct function
+    FUNCTION(dummy),                  // sub menu function
+    FUNCTION(display_makapaka),   // display function
+    FUNCTION(update_time),    // new display data
+    &menu_L1_Temperature,
+};
+
 
 // Line2 - Date
 const struct menu menu_L2_Date = {

@@ -9,6 +9,7 @@
 // Prototypes section
 
 // internal functions
+void toggle_beeper();
 
 // menu functions
 extern void sx_lifesaver(u8 line);
@@ -17,6 +18,8 @@ extern void display_lifesaver(u8 line, u8 update);
 
 // *************************************************************************************************
 // Defines section
+#define LIFESAVER_SOUND_ON          (0u)
+#define LIFESAVER_SOUND_OFF           (1u)
 
 
 // *************************************************************************************************

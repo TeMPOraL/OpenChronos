@@ -378,6 +378,9 @@ void init_global_variables(void)
     // Set alarm time to default value
     reset_alarm();
 
+    //Set lifesaver to default value
+    reset_lifesaver();
+
     // Set buzzer to default value
     reset_buzzer();
 

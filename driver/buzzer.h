@@ -71,7 +71,7 @@ extern void countdown_buzzer(void);
 struct buzzer
 {
     // Keep output for "time" seconds
-    u8 time;
+    u16 time;
 
     // On/off duty
     u16 on_time;

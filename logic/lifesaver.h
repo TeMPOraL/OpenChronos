@@ -21,6 +21,8 @@ extern void display_lifesaver(u8 line, u8 update);
 #define LIFESAVER_SOUND_ON          (0u)
 #define LIFESAVER_SOUND_OFF           (1u)
 
+#define LIFESAVER_DEFAULT_ON                                         (CONV_MS_TO_TICKS(100))
+#define LIFESAVER_DEFAULT_OFF                                        (CONV_MS_TO_TICKS(100))
 
 // *************************************************************************************************
 // Global Variable section

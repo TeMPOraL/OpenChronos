@@ -22,7 +22,7 @@ void toggle_beeper() {
 		sLifesaver.state = LIFESAVER_SOUND_OFF;
 	}
 	else {
-		start_buzzer(255, BUZZER_ON_TICKS, BUZZER_OFF_TICKS);
+		start_buzzer(255, LIFESAVER_DEFAULT_ON, LIFESAVER_DEFAULT_OFF);
 		sLifesaver.state = LIFESAVER_SOUND_ON;
 	}
 }

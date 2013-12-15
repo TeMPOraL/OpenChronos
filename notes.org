@@ -1,0 +1,17 @@
+#+title: Notes for TeMPOraL's modifications to OpenChronos.
+#+startup: hidestars
+
+
+* LifeSaver
+** TODOs
+*** TODO Modify code to support indefinite-period beeping.
+*** TODO Make BPM variable.
+*** TODO Add BPM modification options.
+*** TODO Make the beeper turn off when you leave the lifesaver mode.
+*** TODO Make the hearth symbol appear only on the proper BPM.
+*** TODO (extra) Maybe make other symbols symbolize some relevant, special freqs.
+
+* General TODOs
+
+** TODO Fix the configuration system to something more sane
+   (unless the current version looks like it looks because of code size concerns)

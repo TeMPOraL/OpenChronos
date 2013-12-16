@@ -6,6 +6,7 @@
 ** TODOs
 *** TODO Modify code to support indefinite-period beeping.
 *** DONE Make BPM variable.
+*** TODO Add displaying current BPM value.
 *** TODO Add BPM modification options.
 *** TODO Make the beeper turn off when you leave the lifesaver mode.
 *** TODO Make the hearth symbol appear only on the proper BPM.

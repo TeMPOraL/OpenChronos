@@ -18,7 +18,7 @@ void sx_lifesaver(u8 line) {
 }
 
 void mx_lifesaver(u8 line) {
-	
+	//set up the BPM mode
 }
 
 void toggle_beeper() {
@@ -33,10 +33,14 @@ void toggle_beeper() {
 }
 
 void display_lifesaver(u8 line, u8 update) {
+	u8* str;
 	if(update == DISPLAY_LINE_UPDATE_FULL) {
 		display_symbol(LCD_ICON_HEART, SEG_ON);
 	}
 	else if(update == DISPLAY_LINE_CLEAR) {
 		display_symbol(LCD_ICON_HEART, SEG_OFF);
 	}
+
+	str = int_to_array(sLifesaver.bpm, 4, 0);p
+	display_chars(switch_seg(line, LCD_SEG_L1_3_0, LCD_SEG_L2_3_0), str, SEG_ON);
 }

@@ -30,7 +30,7 @@ extern void display_lifesaver(u8 line, u8 update);
 struct lifesaver
 {
 	u8 state;
-        u8 bpm;
+        u16 bpm;
 };
 extern struct lifesaver sLifesaver;
 

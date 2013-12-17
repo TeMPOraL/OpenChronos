@@ -42,6 +42,6 @@ void display_lifesaver(u8 line, u8 update) {
 		display_symbol(LCD_ICON_HEART, SEG_OFF);
 	}
 
-	str = int_to_array(LIFESAVER_CPR_BPM, 4, 0);
-	display_chars(switch_seg(line, LCD_SEG_L1_3_0, LCD_SEG_L2_3_0), str, SEG_ON);
+	str = int_to_array(100, 4, 1);
+	display_chars(LCD_SEG_L1_3_0, str, SEG_ON);
 }

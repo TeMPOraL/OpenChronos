@@ -9,8 +9,9 @@
 struct lifesaver sLifesaver;
 
 void reset_lifesaver() {
-	sLifesaver.bpm = LIFESAVER_DEFAULT_OFF;
-	sLifesaver.state = LIFESAVER_SOUND_OFF;
+	sLifesaver.bpm = LIFESAVER_CPR_BPM;
+	sLifesaver.soundState = LIFESAVER_SOUND_STATE_OFF;
+	sLifesaver.menuState = LIFESAVER_STATE_RUNNING;
 }
 
 void sx_lifesaver(u8 line) {
@@ -22,13 +23,13 @@ void mx_lifesaver(u8 line) {
 }
 
 void toggle_beeper() {
-	if(sLifesaver.state == LIFESAVER_SOUND_ON) {
+	if(sLifesaver.soundState == LIFESAVER_SOUND_STATE_ON) {
 		stop_buzzer();
-		sLifesaver.state = LIFESAVER_SOUND_OFF;
+		sLifesaver.soundState = LIFESAVER_SOUND_STATE_OFF;
 	}
 	else {
-		start_buzzer(255, LIFESAVER_DEFAULT_ON, sLifesaver.bpm - LIFESAVER_DEFAULT_ON);
-		sLifesaver.state = LIFESAVER_SOUND_ON;
+		start_buzzer(255, LIFESAVER_DEFAULT_ON_TICKS, sLifesaver.bpm - LIFESAVER_DEFAULT_ON_TICKS);
+		sLifesaver.soundState = LIFESAVER_SOUND_STATE_ON;
 	}
 }
 
@@ -41,6 +42,6 @@ void display_lifesaver(u8 line, u8 update) {
 		display_symbol(LCD_ICON_HEART, SEG_OFF);
 	}
 
-	str = int_to_array(sLifesaver.bpm, 4, 0);p
+	str = int_to_array(LIFESAVER_CPR_BPM, 4, 0);
 	display_chars(switch_seg(line, LCD_SEG_L1_3_0, LCD_SEG_L2_3_0), str, SEG_ON);
 }

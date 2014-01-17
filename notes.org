@@ -12,6 +12,17 @@
 *** TODO Make the hearth symbol appear only on the proper BPM.
 *** TODO (extra) Maybe make other symbols symbolize some relevant, special freqs.
 
+
+* Lights
+*** TODO Fullscreen menu entry
+*** TODO Switchable ligts list on upper list (high-button)
+*** TODO Toggle state on bottom list (low-button)
+    
+*** TODO High-buttons turns on radio
+    I think this would be a good operations mode.
+    High button turns on radio and enables changing lights
+    Leaving menu mode turns off radio
+    
 * General TODOs
 
 ** TODO Fix the configuration system to something more sane

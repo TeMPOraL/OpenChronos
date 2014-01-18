@@ -2,6 +2,8 @@
 // Copyleft (C) 2013-Eternity, Temporal Research Centre
 // *************************************************************************************************
 
+#define MAX_LIGHTS 4
+
 // *************************************************************************************************
 // Include section
 
@@ -15,8 +17,6 @@ extern void reset_lights();
 extern void sx_lights(u8 line);
 extern void mx_lights(u8 line);
 extern void display_lights(u8 line, u8 update);
-
-
 
 // *************************************************************************************************
 // Defines section

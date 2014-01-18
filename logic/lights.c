@@ -5,21 +5,19 @@
 // logic
 #include "lights.h"
 
-#define MAX_LIGHTS_CAPTIONS 4
-
 struct lights sLights;
 
-u8 lightNames[MAX_LIGHTS_CAPTIONS][5] = {"SOFT",
-					"HARD",
-					"CHLL",
-					"KTCN"};
+u8 lightNames[MAX_LIGHTS][5] = {"SOFT",
+				"HARD",
+				"CHLL",
+				"KTCN"};
 
 void reset_lights() {
 	sLights.currentLight = 0;
 }
 
 void sx_lights(u8 line) {
-	if(++sLights.currentLight >= MAX_LIGHTS_CAPTIONS) {
+	if(++sLights.currentLight >= MAX_LIGHTS) {
 		sLights.currentLight = 0;
 	}
 }

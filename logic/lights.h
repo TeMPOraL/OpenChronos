@@ -4,6 +4,9 @@
 
 #define MAX_LIGHTS 4
 
+#define LIGHT_STATE_OFF 0
+#define LIGHT_STATE_ON 1
+
 // *************************************************************************************************
 // Include section
 
@@ -26,6 +29,7 @@ extern void display_lights(u8 line, u8 update);
 struct lights
 {
 	u8 currentLight;
+	u8 lightStates[4];
 };
 
 extern struct lights sLights;

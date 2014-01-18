@@ -110,6 +110,9 @@
 #include "rfbsl.h"
 #include "test.h"
 
+#include "lifesaver.h"
+#include "lights.h"
+
 // *************************************************************************************************
 // Prototypes section
 void init_application(void);
@@ -380,6 +383,9 @@ void init_global_variables(void)
 
     //Set lifesaver to default value
     reset_lifesaver();
+
+    //Set Lights to default values as well
+    reset_lights();
 
     // Set buzzer to default value
     reset_buzzer();

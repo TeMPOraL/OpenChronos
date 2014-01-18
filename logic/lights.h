@@ -9,11 +9,14 @@
 // Prototypes section
 
 // internal functions
+extern void reset_lights();
 
 // menu functions
 extern void sx_lights(u8 line);
 extern void mx_lights(u8 line);
 extern void display_lights(u8 line, u8 update);
+
+
 
 // *************************************************************************************************
 // Defines section
@@ -22,8 +25,11 @@ extern void display_lights(u8 line, u8 update);
 // Global Variable section
 struct lights
 {
+	u8 currentLight;
 };
+
 extern struct lights sLights;
 
 // *************************************************************************************************
 // Extern section
+

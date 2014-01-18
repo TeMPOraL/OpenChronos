@@ -10,7 +10,7 @@ include config.mk
 
 PROJ_DIR	=.
 BUILD_DIR = build
-CFLAGS_PRODUCTION = -Os -Wall 
+CFLAGS_PRODUCTION = -Os -Wall
 #-Wl,--section-start -Wl,.datalogsection=0xa400 #-T msp430.x
 #-Wl,--gc-sections # -ffunction-sections # -fdata-sections  -fno-inline-functions# -O optimizes 
 

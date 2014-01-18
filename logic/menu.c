@@ -59,6 +59,7 @@
 #include "acceleration.h"
 #include "makapaka.h"
 #include "lifesaver.h"
+#include "lights.h"
 #ifdef CONFIG_DATALOGGER
 #include "datalog.h"
 #endif
@@ -236,7 +237,15 @@ const struct menu menu_L1_Lifesaver = {
     FUNCTION(dummy),                  // sub menu function
     FUNCTION(display_lifesaver),   // display function
     FUNCTION(update_time),    // new display data
-    &menu_L1_Temperature,
+    &menu_L1_Lights,
+};
+
+const struct menu menu_L1_Lights = {
+	FUNCTION(sx_lights),
+	FUNCTION(mx_lights),
+	FUNCTION(display_lights),
+	FUNCTION(update_time),
+	&menu_L1_Temperature
 };
 
 
